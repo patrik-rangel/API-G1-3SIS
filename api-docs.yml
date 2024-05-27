@@ -90,7 +90,6 @@ paths:
         '401':
           description: Unauthorized
 
-
   /api/v1/cost-centers:
     post:
       summary: Create Cost Center by Executive
@@ -103,20 +102,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                nome_Centro:
-                  type: string
-                  description: Cost center name
-                orcamento_Trimestral:
-                  type: number
-                  description: Quarterly budget
-                tipo:
-                  type: string
-                  enum:
-                    - PRODUTIVO
-                    - NAO_PRODUTIVO
-                  description: Cost center type (Productive or Non-Productive)
+              $ref: '#/components/schemas/CostCenter'
       responses:
         '201':
           description: Created
@@ -134,6 +120,53 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '403':
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  '/api/v1/cost-center/{id-cost-center}':
+    get:
+      summary: Get Cost Center by ID
+      operationId: GetCostCenterById
+      tags:
+        - executive
+      security:
+        - bearerAuth: []  # Require authorization for this endpoint
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
+      responses:
+        '200':
+          description: Cost Center retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostCenter'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
@@ -294,7 +327,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  /api/v1/create-employees:
+  /api/v1/employees:
     post:
       summary: Register Employee by Executive
       operationId: RegisterEmployeeByExecutive
@@ -402,6 +435,24 @@ components:
           type: string
         type_user:
           $ref: '#/components/schemas/TypeUser'
+          
+          
+    CostCenter:
+      description: Cost center type (Productive or Non-Productive)
+      type: object 
+      properties:
+        cost_center_name:
+          type: string
+          description: Cost center name
+        quarterly_budget:
+          type: number
+          description: Quarterly budget
+        type_cost_center:
+          type: string
+          enum:
+            - PRODUTIVO
+            - NAO_PRODUTIVO
+          description: Cost center type (Productive or Non-Productive)
           
     Employee:
       description: Employee data
