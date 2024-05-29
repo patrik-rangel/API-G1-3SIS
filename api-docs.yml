@@ -374,6 +374,107 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
+  /api/v1/employees/by-cost-center/{id-cost-center}:
+    get:
+      summary: Get Employees by Cost Center
+      operationId: GetEmployeesByCostCenter
+      tags:
+        - executive
+      security:
+        - bearerAuth: []  # Require authorization for this endpoint
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
+      responses:
+        '200':
+          description: List of employees for the cost center
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEmployee'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (e.g., email already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/variable-cost/{id-variable-expense}:
+    patch:
+      summary: Approval Variable Exepense
+      operationId: ApprovalVariableExepense
+      tags:
+        - executive
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id-variable-expense
+          required: true
+          schema:
+            type: integer
+            description: Unique variable expense identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariableExpenseUpdate'
+      responses:
+        '200':
+          description: Expense updated successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
   /api/v1/variable-cost:
     post:
       summary: Add Variable Expense
@@ -414,6 +515,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/variable-cost/by-cost-center/{id-cost-center}:
+    get:
+      summary: Get Variable Expenses by Cost Center
+      operationId: GetVariableExpensesByCostCenter
+      tags:
+        - executive
+      security:
+        - bearerAuth: []  # Require authorization for this endpoint
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
+      responses:
+        '200':
+          description: List of variable expenses for the cost center
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVariableExpense'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   securitySchemes:
@@ -426,6 +574,11 @@ components:
     User:
       description: User object in the application
       type: object
+      required:
+        - name
+        - email
+        - password
+        - type_user
       properties:
         name:
           type: string
@@ -436,10 +589,13 @@ components:
         type_user:
           $ref: '#/components/schemas/TypeUser'
           
-          
     CostCenter:
       description: Cost center type (Productive or Non-Productive)
-      type: object 
+      type: object
+      required:
+        - cost_center_name
+        - quarterly_budget
+        - type_cost_center
       properties:
         cost_center_name:
           type: string
@@ -457,6 +613,12 @@ components:
     Employee:
       description: Employee data
       type: object
+      required:
+        - name
+        - email
+        - job_title
+        - salary
+        - position
       properties:
         name:
           type: string
@@ -478,9 +640,24 @@ components:
           type: integer
           description: Foreign key referencing the cost center
           
+    ListEmployee:
+      description: List of employees for the cost center
+      type: array
+      items:
+        $ref: '#/components/schemas/Employee'
+          
     VariableExpense:
       description: Variable expense data
       type: object
+      required:
+        - type_variable
+        - describe
+        - value
+        - date
+        - responsible
+        - category
+        - payment_method
+        - obs
       properties:
         type_variable:
           type: string
@@ -513,6 +690,35 @@ components:
         fk_cost_center:
           type: integer
           description: Foreign key referencing the cost center
+          
+    ListVariableExpense:
+      description: List of variable expenses for the cost center
+      type: array
+      items:
+       $ref: '#/components/schemas/VariableExpense' 
+       
+    VariableExpenseUpdate:
+      description: Updated variable expense data
+      type: object
+      required:
+        - date
+        - responsible
+        - variable_type
+        - approved
+      properties:
+        date:
+          type: string
+          format: date
+          description: Expense date
+        responsible:
+          type: string
+          description: Person responsible for the expense
+        variable_type:
+          type: string
+          description: Expense type 
+        approved:
+          type: boolean
+          description: Expense approval status (true or false)
       
     TypeUser:
       description: Types of users
