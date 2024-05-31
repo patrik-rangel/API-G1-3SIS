@@ -1,0 +1,737 @@
+openapi: 3.0.2
+
+security:
+  - bearerAuth: []
+
+info:
+  version: 1.0.0
+  title: Cost Center Service
+  description: API that inserts and searches expenses related to the cost center
+
+tags:
+  - name: user
+    description: Register and authenticate users
+  - name: cost
+    description: Create and search expenses
+  - name: executive
+    description: Executive actions
+
+paths:
+  /api/v1/register:
+    post:
+      summary: Register user
+      operationId: RegisterUser
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (e.g., email already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/login:
+    post:
+      summary: Login user
+      operationId: LoginUser
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: User's email address
+                password:
+                  type: string
+                  description: User's password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Access token for authorization
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request (e.g., invalid credentials)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+
+  /api/v1/cost-centers:
+    post:
+      summary: Create Cost Center by Executive
+      operationId: CreateCostCenter
+      tags:
+        - executive
+      security:
+        - bearerAuth: [] 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CostCenter'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  '/api/v1/cost-center/{id-cost-center}':
+    get:
+      summary: Get Cost Center by ID
+      operationId: GetCostCenterById
+      tags:
+        - executive
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
+      responses:
+        '200':
+          description: Cost Center retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostCenter'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  '/api/v1/register-executive/{id_cost_center}':
+    post:
+      summary: Register Executive with Cost Center ID
+      operationId: RegisterExecutiveWithCostCenterID
+      tags:
+        - executive
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - in: path
+          name: id_cost_center
+          required: true
+          schema:
+            type: integer
+            description: Cost Center ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Executive name
+                email:
+                  type: string
+                  description: Executive email address
+                password:  
+                  type: string
+                  description: Executive password
+                type_user:
+                  $ref: '#/components/schemas/TypeUser'
+      responses:
+        '201':
+          description: Executive registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message (e.g., "Executive registered successfully")
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found (e.g., Cost center not found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (e.g., email already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/create-user:
+    post:
+      summary: Create User (Employee) by Executive
+      operationId: CreateUserByExecutive
+      tags:
+        - executive
+      security:
+        - bearerAuth: [] 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Employee name
+                email:
+                  type: string
+                  description: Employee email address
+                password:  
+                  type: string
+                  description: Employee password
+                type_user:
+                  $ref: '#/components/schemas/TypeUser'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  password_employee:
+                    type: string
+                    description: Password for employee
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (e.g., email already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/employees:
+    post:
+      summary: Register Employee by Executive
+      operationId: RegisterEmployeeByExecutive
+      tags:
+        - executive
+      security:
+        - bearerAuth: []  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '201':
+          description: Employee created successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (e.g., email already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/employees/by-cost-center/{id-cost-center}:
+    get:
+      summary: Get Employees by Cost Center
+      operationId: GetEmployeesByCostCenter
+      tags:
+        - executive
+      security:
+        - bearerAuth: []  
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
+      responses:
+        '200':
+          description: List of employees for the cost center
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEmployee'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (e.g., email already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/variable-cost/{id-variable-expense}:
+    patch:
+      summary: Approval Variable Exepense
+      operationId: ApprovalVariableExepense
+      tags:
+        - executive
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id-variable-expense
+          required: true
+          schema:
+            type: integer
+            description: Unique variable expense identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariableExpenseUpdate'
+      responses:
+        '200':
+          description: Expense updated successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/variable-cost:
+    post:
+      summary: Add Variable Expense
+      operationId: AddVariableExpense
+      tags:
+        - cost
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariableExpense'
+      responses:
+        '201':
+          description: Expense added successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /api/v1/variable-cost/by-cost-center/{id-cost-center}:
+    get:
+      summary: Get Variable Expenses by Cost Center
+      operationId: GetVariableExpensesByCostCenter
+      tags:
+        - executive
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
+      responses:
+        '200':
+          description: List of variable expenses for the cost center
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVariableExpense'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  
+  schemas:
+    User:
+      description: User object in the application
+      type: object
+      required:
+        - name
+        - email
+        - password
+        - type_user
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        type_user:
+          $ref: '#/components/schemas/TypeUser'
+          
+    CostCenter:
+      description: Cost center type (Productive or Non-Productive)
+      type: object
+      required:
+        - cost_center_name
+        - quarterly_budget
+        - type_cost_center
+      properties:
+        cost_center_name:
+          type: string
+          description: Cost center name
+        quarterly_budget:
+          type: number
+          description: Quarterly budget
+        type_cost_center:
+          type: string
+          enum:
+            - PRODUTIVO
+            - NAO_PRODUTIVO
+          description: Cost center type (Productive or Non-Productive)
+          
+    Employee:
+      description: Employee data
+      type: object
+      required:
+        - name
+        - email
+        - job_title
+        - salary
+        - position
+      properties:
+        name:
+          type: string
+          description: Employee's full name
+        email:
+          type: string
+          description: Employee's email address
+          format: email 
+        job_title:
+          type: string
+          description: Employee's job title
+        salary:
+          type: number
+          description: Employee's salary
+        position:
+          type: string
+          description: Employee's seniority level
+        fk_cost_center:
+          type: integer
+          description: Foreign key referencing the cost center
+          
+    ListEmployee:
+      description: List of employees for the cost center
+      type: array
+      items:
+        $ref: '#/components/schemas/Employee'
+          
+    VariableExpense:
+      description: Variable expense data
+      type: object
+      required:
+        - type_variable
+        - describe
+        - value
+        - date
+        - responsible
+        - category
+        - payment_method
+        - obs
+      properties:
+        type_variable:
+          type: string
+          description: type variable expense
+        describe:
+          type: string
+          description: Expense description
+        value:
+          type: number
+          description: Expense amount
+        date:
+          type: string
+          format: date  
+          description: Expense date
+        responsible:
+          type: string
+          description: Person responsible for the expense
+        category:
+          type: string
+          description: Expense category
+        payment_method:
+          type: string
+          description: Payment method (e.g., cash, card)
+        obs:
+          type: string
+          description: Additional notes or observations
+        approval:
+          type: boolean
+          description: Expense approval status (true or false)
+        fk_cost_center:
+          type: integer
+          description: Foreign key referencing the cost center
+          
+    ListVariableExpense:
+      description: List of variable expenses for the cost center
+      type: array
+      items:
+       $ref: '#/components/schemas/VariableExpense' 
+       
+    VariableExpenseUpdate:
+      description: Updated variable expense data
+      type: object
+      required:
+        - date
+        - responsible
+        - variable_type
+        - approved
+      properties:
+        date:
+          type: string
+          format: date
+          description: Expense date
+        responsible:
+          type: string
+          description: Person responsible for the expense
+        variable_type:
+          type: string
+          description: Expense type 
+        approved:
+          type: boolean
+          description: Expense approval status (true or false)
+      
+    TypeUser:
+      description: Types of users
+      type: string
+      enum:
+        - EXEC
+        - FUNC
+  
+    ErrorResponse:
+      description: Error object
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
