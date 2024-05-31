@@ -1,7 +1,7 @@
 openapi: 3.0.2
 
 security:
-  - bearerAuth: []
+  - authorization: []
 
 info:
   version: 1.0.0
@@ -97,7 +97,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       requestBody:
         content:
           application/json:
@@ -138,7 +138,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       parameters:
         - in: path
           name: id-cost-center
@@ -185,7 +185,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       parameters:
         - in: path
           name: id_cost_center
@@ -267,7 +267,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       requestBody:
         content:
           application/json:
@@ -334,7 +334,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []  
+        - authorization: []  
       requestBody:
         content:
           application/json:
@@ -381,7 +381,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []  
+        - authorization: []  
       parameters:
         - in: path
           name: id-cost-center
@@ -434,7 +434,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []
+        - authorization: []
       parameters:
         - in: path
           name: id-variable-expense
@@ -482,7 +482,7 @@ paths:
       tags:
         - cost
       security:
-        - bearerAuth: []
+        - authorization: []
       requestBody:
         content:
           application/json:
@@ -523,7 +523,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       parameters:
         - in: path
           name: id-cost-center
@@ -565,10 +565,10 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    authorization:
+      type: apiKey
+      in: header
+      name: Authorization
   
   schemas:
     User:
