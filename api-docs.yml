@@ -138,7 +138,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []  # Require authorization for this endpoint
+        - bearerAuth: [] 
       parameters:
         - in: path
           name: id-cost-center
@@ -205,7 +205,7 @@ paths:
                 email:
                   type: string
                   description: Executive email address
-                password:  #  Assuming executive sets initial password
+                password:  
                   type: string
                   description: Executive password
                 type_user:
@@ -381,7 +381,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []  # Require authorization for this endpoint
+        - bearerAuth: []  
       parameters:
         - in: path
           name: id-cost-center
@@ -523,7 +523,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []  # Require authorization for this endpoint
+        - bearerAuth: [] 
       parameters:
         - in: path
           name: id-cost-center
@@ -626,7 +626,7 @@ components:
         email:
           type: string
           description: Employee's email address
-          format: email  # Ensure valid email format
+          format: email 
         job_title:
           type: string
           description: Employee's job title
