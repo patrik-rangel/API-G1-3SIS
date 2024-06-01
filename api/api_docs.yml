@@ -594,15 +594,15 @@ components:
       type: object
       required:
         - cost_center_name
-        - quarterly_budget
+        - annual_budget
         - type_cost_center
       properties:
         cost_center_name:
           type: string
           description: Cost center name
-        quarterly_budget:
+        annual_budget:
           type: number
-          description: Quarterly budget
+          description: Annual budget
         type_cost_center:
           type: string
           enum:
