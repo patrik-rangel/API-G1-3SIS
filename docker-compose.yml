@@ -4,12 +4,12 @@ services:
   postgres-grupo1:
     image: postgres:latest
     ports:
-      - "5499:5432"
+      - "5432:5432"
     volumes:
       - "./tools/postgres/data:/var/postgresql/data/pgdata"
       - "./tools/postgres/scripts:/docker-entrypoint-initdb.d"
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=grupo1
+      - POSTGRES_PASSWORD=grupo1
       - POSTGRES_DB=grupo1
       - PGDATA=/var/lib/postgresql/data/pgdata
