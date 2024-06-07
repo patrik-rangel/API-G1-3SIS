@@ -33,6 +33,5 @@ func (u *UserService) Login(ctx context.Context, user entity.User) error {
 }
 
 func (u *UserService) Register(ctx context.Context, user entity.User) error {
-	//return u.gtw.InsertUser(ctx, user)
-	return nil
+	return u.gtw.InsertUser(ctx, user)
 }

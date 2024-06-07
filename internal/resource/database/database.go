@@ -33,10 +33,7 @@ func (d *Database) GetUser(ctx context.Context, user entity.User) error {
 	})
 	if err != nil {
 		d.log.Error(err.Error())
-		if validateErrSql(err) {
-			return entity.ErrNotFoundUser
-		}
-		return err
+		return validateUserErrSql(err)
 	}
 
 	if userRows == (sql.Usuario{}) {
@@ -46,6 +43,29 @@ func (d *Database) GetUser(ctx context.Context, user entity.User) error {
 	return nil
 }
 
-func validateErrSql(err error) bool {
-	return err != nil && strings.Contains(err.Error(), "sql: no rows in result set")
+func (d *Database) InsertUser(ctx context.Context, user entity.User) error {
+	err := d.queries.InsertUser(ctx, sql.InsertUserParams{
+		Nome:        user.Name,
+		Email:       user.Email,
+		Senha:       user.Password,
+		TipoUsuario: user.TypeUser.String(),
+	})
+
+	if err != nil {
+		d.log.Error(err.Error())
+		return validateUserErrSql(err)
+	}
+
+	return nil
+}
+
+func validateUserErrSql(err error) error {
+	switch {
+	case strings.Contains(err.Error(), "sql: no rows in result set"):
+		return entity.ErrNotFoundUser
+	case strings.Contains(err.Error(), "duplicate key value violates unique constraint"):
+		return entity.ErrUserExists
+	}
+
+	return err
 }

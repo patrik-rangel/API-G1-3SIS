@@ -24,5 +24,18 @@ func (h *Handler) LoginUser(ctx context.Context, req openapi.OptLoginUserReq) (o
 
 // POST /api/v1/register
 func (h *Handler) RegisterUser(ctx context.Context, req openapi.OptUser) (openapi.RegisterUserRes, error) {
-	return nil, nil
+	user := entity.User{
+		Name: req.Value.Name,
+		Email: req.Value.Email,
+		Password: req.Value.Password,
+		TypeUser: entity.TypeUser(req.Value.TypeUser),
+	}
+
+	err := h.userService.Register(ctx, user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &openapi.RegisterUserCreated{}, nil
 }
