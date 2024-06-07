@@ -29,6 +29,12 @@ paths:
             schema:
               $ref: '#/components/schemas/User'
       responses:
+        default: &default
+          description: default error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '201':
           description: Created
         '400':
@@ -69,20 +75,18 @@ paths:
                   type: string
                   description: User's password
       responses:
+        default:
+          <<: *default
         '200':
           description: Login successful
+        '400':
+          description: Bad Request (e.g., invalid credentials)
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    description: Access token for authorization
-                  user:
-                    $ref: '#/components/schemas/User'
-        '400':
-          description: Bad Request (e.g., invalid credentials)
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
@@ -104,6 +108,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CostCenter'
       responses:
+        default:
+          <<: *default
         '201':
           description: Created
         '400':
@@ -147,6 +153,8 @@ paths:
             type: integer
             description: Unique cost center identifier
       responses:
+        default:
+          <<: *default
         '200':
           description: Cost Center retrieved successfully
           content:
@@ -211,6 +219,8 @@ paths:
                 type_user:
                   $ref: '#/components/schemas/TypeUser'
       responses:
+        default:
+          <<: *default
         '201':
           description: Executive registered successfully
           content:
@@ -286,6 +296,8 @@ paths:
                 type_user:
                   $ref: '#/components/schemas/TypeUser'
       responses:
+        default:
+          <<: *default
         '201':
           description: Created
           content:
@@ -341,6 +353,8 @@ paths:
             schema:
               $ref: '#/components/schemas/Employee'
       responses:
+        default:
+          <<: *default
         '201':
           description: Employee created successfully
         '400':
@@ -390,6 +404,8 @@ paths:
             type: integer
             description: Unique cost center identifier
       responses:
+        default:
+          <<: *default
         '200':
           description: List of employees for the cost center
           content:
@@ -448,6 +464,8 @@ paths:
             schema:
               $ref: '#/components/schemas/VariableExpenseUpdate'
       responses:
+        default:
+          <<: *default
         '200':
           description: Expense updated successfully
         '400':
@@ -489,6 +507,8 @@ paths:
             schema:
               $ref: '#/components/schemas/VariableExpense'
       responses:
+        default:
+          <<: *default
         '201':
           description: Expense added successfully
         '400':
@@ -532,6 +552,8 @@ paths:
             type: integer
             description: Unique cost center identifier
       responses:
+        default:
+          <<: *default
         '200':
           description: List of variable expenses for the cost center
           content:
@@ -593,10 +615,14 @@ components:
       description: Cost center type (Productive or Non-Productive)
       type: object
       required:
+        - area
         - cost_center_name
         - annual_budget
         - type_cost_center
       properties:
+        area:
+          type: string
+          description: area related to the cost center
         cost_center_name:
           type: string
           description: Cost center name
@@ -731,7 +757,5 @@ components:
       description: Error object
       type: object
       properties:
-        error:
-          type: string
         message:
           type: string
