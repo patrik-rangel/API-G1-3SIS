@@ -135,123 +135,123 @@ INSERT INTO gastos_variaveis (tipo_variavel, valor, categoria_despesa, desc_tran
 
 -- 1. Marcos Silva (Desenvolvimento de Software)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Marcos Silva', 'marcos.silva@empresa.com.br', 'f31e2d37170d55f010f4466544142924', 'EXEC');
+('Marcos Silva', 'marcos.silva@empresa.com.br', '123456', 'EXEC');
 
 -- 2. Ana Oliveira (Infraestrutura de TI)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Ana Oliveira', 'ana.oliveira@empresa.com.br', '4823e85551523e28157643f17a67e79a', 'EXEC');
+('Ana Oliveira', 'ana.oliveira@empresa.com.br', '123456', 'EXEC');
 
 -- 3. Bruno Santos (Suporte Técnico)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Bruno Santos', 'bruno.santos@empresa.com.br', '356400753228538355613119066a321a', 'EXEC');
+('Bruno Santos', 'bruno.santos@empresa.com.br', '123456', 'EXEC');
 
 -- 4. João Silva (Recursos Humanos)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('João Silva', 'joao.silva@empresa.com.br', '23022166e875846864289943151e3d28', 'EXEC');
+('João Silva', 'joao.silva@empresa.com.br', '123456', 'EXEC');
 
 -- 5. Maria Oliveira (Recursos Humanos)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Maria Oliveira', 'maria.oliveira@empresa.com.br', '1234567890abcdef1234567890abcdef', 'EXEC');
+('Maria Oliveira', 'maria.oliveira@empresa.com.br', '123456', 'EXEC');
 
 -- 6. Pedro Souza (Recursos Humanos)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Pedro Souza', 'pedro.souza@empresa.com.br', 'abcdef12345678901234567890abcdef', 'EXEC');
+('Pedro Souza', 'pedro.souza@empresa.com.br', '123456', 'EXEC');
 
 -- 7. Carlos Oliveira (Finanças)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Carlos Oliveira', 'carlos.oliveira@empresa.com.br', 'f0e284e5b49733335433e35627477a7f', 'EXEC');
+('Carlos Oliveira', 'carlos.oliveira@empresa.com.br', '123456', 'EXEC');
 
 -- 8. Luisa Silva (Finanças)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Luisa Silva', 'luisa.silva@empresa.com.br', 'd41d8cd98f00b204e9800998ecf8427e', 'EXEC');
+('Luisa Silva', 'luisa.silva@empresa.com.br', '123456', 'EXEC');
 
 -- 9. Rodrigo Lima (Marketing)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Rodrigo Lima', 'rodrigo.lima@empresa.com.br', '1c0cfe8f80134fdeb5d84b68b9f8e9ae', 'EXEC');
+('Rodrigo Lima', 'rodrigo.lima@empresa.com.br', '123456', 'EXEC');
 
 -- 10. Fernanda Costa (Marketing)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Fernanda Costa', 'fernanda.costa@empresa.com.br', '5f4dcc3b5aa765d61d8327deb882cf99', 'EXEC');
+('Fernanda Costa', 'fernanda.costa@empresa.com.br', '123456', 'EXEC');
 
 -- 11. Lucas Rocha (Vendas)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Lucas Rocha', 'lucas.rocha@empresa.com.br', '098f6bcd4621d373cade4e832627b4f6', 'EXEC');
+('Lucas Rocha', 'lucas.rocha@empresa.com.br', '123456', 'EXEC');
 
 -- 12. Amanda Mendes (Vendas)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Amanda Mendes', 'amanda.mendes@empresa.com.br', '5ebe2294ecd0e0f08eab7690d2a6ee69', 'EXEC');
+('Amanda Mendes', 'amanda.mendes@empresa.com.br', '123456', 'EXEC');
 
 -- 13. Felipe Silva (Desenvolvimento de Software)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Felipe Silva', 'felipe.silva@empresa.com.br', 'e99a18c428cb38d5f260853678922e03', 'EXEC');
+('Felipe Silva', 'felipe.silva@empresa.com.br', '123456', 'EXEC');
 
 -- 14. Julia Ferreira (Infraestrutura de TI)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Julia Ferreira', 'julia.ferreira@empresa.com.br', '6c97424dc92c008d4ae36e4e09f4c437', 'EXEC');
+('Julia Ferreira', 'julia.ferreira@empresa.com.br', '123456', 'EXEC');
 
 -- 15. André Martins (Suporte Técnico)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('André Martins', 'andre.martins@empresa.com.br', 'f1e4c3d28213f70a2454c74c4c2a70fc', 'EXEC');
+('André Martins', 'andre.martins@empresa.com.br', '123456', 'EXEC');
 
 -- 16. Beatriz Lima (Desenvolvimento de Software)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Beatriz Lima', 'beatriz.lima@empresa.com.br', 'a6d3f2a9c9b0e9efc6b1e6f6c5d9e2f3', 'FUNC');
+('Beatriz Lima', 'beatriz.lima@empresa.com.br', '123456', 'FUNC');
 
 -- 17. Carlos Mendes (Infraestrutura de TI)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Carlos Mendes', 'carlos.mendes@empresa.com.br', 'b7e6f7c8d9a1b2c3d4e5f6g7h8i9j0k1', 'FUNC');
+('Carlos Mendes', 'carlos.mendes@empresa.com.br', '123456', 'FUNC');
 
 -- 18. Daniela Alves (Suporte Técnico)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Daniela Alves', 'daniela.alves@empresa.com.br', 'c8d9e0f1g2h3i4j5k6l7m8n9o0p1q2r3', 'FUNC');
+('Daniela Alves', 'daniela.alves@empresa.com.br', '123456', 'FUNC');
 
 -- 19. Eduardo Ferreira (Recursos Humanos)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Eduardo Ferreira', 'eduardo.ferreira@empresa.com.br', 'd9e0f1g2h3i4j5k6l7m8n9o0p1q2r3s4', 'FUNC');
+('Eduardo Ferreira', 'eduardo.ferreira@empresa.com.br', '123456', 'FUNC');
 
 -- 20. Fabiana Souza (Recursos Humanos)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Fabiana Souza', 'fabiana.souza@empresa.com.br', 'e0f1g2h3i4j5k6l7m8n9o0p1q2r3s4t5', 'FUNC');
+('Fabiana Souza', 'fabiana.souza@empresa.com.br', '123456', 'FUNC');
 
 -- 21. Gabriel Martins (Finanças)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Gabriel Martins', 'gabriel.martins@empresa.com.br', 'f1g2h3i4j5k6l7m8n9o0p1q2r3s4t5u6', 'FUNC');
+('Gabriel Martins', 'gabriel.martins@empresa.com.br', '123456', 'FUNC');
 
 -- 22. Helena Rocha (Finanças)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Helena Rocha', 'helena.rocha@empresa.com.br', 'g2h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7', 'FUNC');
+('Helena Rocha', 'helena.rocha@empresa.com.br', '123456', 'FUNC');
 
 -- 23. Igor Nunes (Marketing)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Igor Nunes', 'igor.nunes@empresa.com.br', 'h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8', 'FUNC');
+('Igor Nunes', 'igor.nunes@empresa.com.br', '123456', 'FUNC');
 
 -- 24. Juliana Barros (Marketing)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Juliana Barros', 'juliana.barros@empresa.com.br', 'i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9', 'FUNC');
+('Juliana Barros', 'juliana.barros@empresa.com.br', '123456', 'FUNC');
 
 -- 25. Kevin Dias (Vendas)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Kevin Dias', 'kevin.dias@empresa.com.br', 'j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0', 'FUNC');
+('Kevin Dias', 'kevin.dias@empresa.com.br', '123456', 'FUNC');
 
 -- 26. Larissa Carvalho (Vendas)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Larissa Carvalho', 'larissa.carvalho@empresa.com.br', 'k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1', 'FUNC');
+('Larissa Carvalho', 'larissa.carvalho@empresa.com.br', '123456', 'FUNC');
 
 -- 27. Marcelo Gonçalves (Desenvolvimento de Software)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Marcelo Gonçalves', 'marcelo.goncalves@empresa.com.br', 'l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2', 'FUNC');
+('Marcelo Gonçalves', 'marcelo.goncalves@empresa.com.br', '123456', 'FUNC');
 
 -- 28. Natalia Ribeiro (Infraestrutura de TI)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Natalia Ribeiro', 'natalia.ribeiro@empresa.com.br', 'm8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3', 'FUNC');
+('Natalia Ribeiro', 'natalia.ribeiro@empresa.com.br', '123456', 'FUNC');
 
 -- 29. Otavio Lima (Suporte Técnico)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Otavio Lima', 'otavio.lima@empresa.com.br', 'n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4', 'FUNC');
+('Otavio Lima', 'otavio.lima@empresa.com.br', '123456', 'FUNC');
 
 -- 30. Patricia Fernandes (Recursos Humanos)
 INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
-('Patricia Fernandes', 'patricia.fernandes@empresa.com.br', 'o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5', 'FUNC');
+('Patricia Fernandes', 'patricia.fernandes@empresa.com.br', '123456', 'FUNC');
 
 
 -- 1. Executivo
