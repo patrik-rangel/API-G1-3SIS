@@ -25,3 +25,6 @@ generated/openapi
 
 # env
 .env
+
+# sqlc
+generated/sqlc
