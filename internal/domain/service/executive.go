@@ -32,7 +32,7 @@ func NewExecutive(gtw gateway.Executive) *ExecutiveService {
 func (e *ExecutiveService) RegisterEmployee(ctx context.Context, employee entity.Employee) error {
 	return e.gtw.InsertEmployee(ctx, employee)
 }
- 
+
 func (e *ExecutiveService) RegisterExecutive(ctx context.Context, user entity.User, costCenterId int) error {
 	return e.gtw.InsertExecutive(ctx, user, costCenterId)
 }

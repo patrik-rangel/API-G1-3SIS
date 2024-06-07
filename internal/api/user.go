@@ -10,10 +10,10 @@ import (
 // POST /api/v1/login
 func (h *Handler) LoginUser(ctx context.Context, req openapi.OptLoginUserReq) (openapi.LoginUserRes, error) {
 	user := entity.User{
-		Email: req.Value.Email.Value,
+		Email:    req.Value.Email.Value,
 		Password: req.Value.Password.Value,
 	}
-	
+
 	err := h.userService.Login(ctx, user)
 	if err != nil {
 		return nil, err
@@ -25,8 +25,8 @@ func (h *Handler) LoginUser(ctx context.Context, req openapi.OptLoginUserReq) (o
 // POST /api/v1/register
 func (h *Handler) RegisterUser(ctx context.Context, req openapi.OptUser) (openapi.RegisterUserRes, error) {
 	user := entity.User{
-		Name: req.Value.Name,
-		Email: req.Value.Email,
+		Name:     req.Value.Name,
+		Email:    req.Value.Email,
 		Password: req.Value.Password,
 		TypeUser: entity.TypeUser(req.Value.TypeUser),
 	}
