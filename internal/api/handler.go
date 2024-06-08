@@ -17,13 +17,15 @@ type Handler struct {
 	log              *zap.Logger
 	userService      service.User
 	executiveService service.Executive
+	costService      service.Cost
 }
 
-func NewHandler(u service.User, e service.Executive) *Handler {
+func NewHandler(u service.User, e service.Executive, c service.Cost) *Handler {
 	return &Handler{
 		log:              logger.NewLogger().Named("layer-handler"),
 		userService:      u,
 		executiveService: e,
+		costService:      c,
 	}
 }
 
@@ -41,6 +43,12 @@ func (h *Handler) NewError(ctx context.Context, err error) *openapi.ErrorRespons
 	case errors.Is(err, entity.ErrUserExists):
 		statusCode = 409
 		msg = entity.ErrUserExists.Error()
+	case errors.Is(err, entity.ErrExecutiveExists):
+		statusCode = 409
+		msg = entity.ErrExecutiveExists.Error()
+	case errors.Is(err, entity.ErrCostCenterExists):
+		statusCode = 409
+		msg = entity.ErrCostCenterExists.Error()
 	}
 
 	return &openapi.ErrorResponseStatusCode{

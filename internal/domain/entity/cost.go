@@ -10,6 +10,7 @@ const (
 )
 
 type CostCenter struct {
+	Area         string
 	Name         string
 	AnnualBudget float64
 	Type         TypeCostCenter

@@ -14,7 +14,7 @@ var _ Cost = (*CostService)(nil)
 type Cost interface {
 	AddVariableExpense(ctx context.Context, variableExepense entity.VariableExepense) error
 	ApprovalVariableExepense(ctx context.Context, id int, variableExepense entity.VariableExepense) error
-	CreateCostCenter(ctx context.Context, costCenter entity.CostCenter) error
+	CreateCostCenter(ctx context.Context, costCenter entity.CostCenter) (int, error)
 	GetVariableExpensesByCostCenter(ctx context.Context, id int) ([]*entity.VariableExepense, error)
 	GetCostCenterById(ctx context.Context, id int) (*entity.CostCenter, error)
 	GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.VariableExepense, error)
@@ -40,7 +40,7 @@ func (c *CostService) ApprovalVariableExepense(ctx context.Context, id int, vari
 	return c.gtw.UpdateVariableExepense(ctx, id, variableExepense)
 }
 
-func (c *CostService) CreateCostCenter(ctx context.Context, costCenter entity.CostCenter) error {
+func (c *CostService) CreateCostCenter(ctx context.Context, costCenter entity.CostCenter) (int, error) {
 	return c.gtw.InsertCostCenter(ctx, costCenter)
 }
 

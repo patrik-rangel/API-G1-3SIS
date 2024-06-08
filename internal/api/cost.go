@@ -2,8 +2,10 @@ package api
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/patrik-rangel/API-G1-3SIS/generated/openapi"
+	"github.com/patrik-rangel/API-G1-3SIS/internal/domain/entity"
 )
 
 // POST /api/v1/variable-cost
@@ -18,7 +20,19 @@ func (h *Handler) ApprovalVariableExepense(ctx context.Context, req openapi.OptV
 
 // POST /api/v1/cost-centers
 func (h *Handler) CreateCostCenter(ctx context.Context, req openapi.OptCostCenter) (openapi.CreateCostCenterRes, error) {
-	return nil, nil
+	costCenter := entity.CostCenter{
+		Area:         req.Value.Area,
+		Name:         req.Value.CostCenterName,
+		AnnualBudget: req.Value.AnnualBudget,
+		Type:         entity.TypeCostCenter(req.Value.TypeCostCenter),
+	}
+
+	id, err := h.costService.CreateCostCenter(ctx, costCenter)
+	if err != nil {
+		return nil, err
+	}
+
+	return &openapi.CreateCostCenterCreated{IDCostCenter: openapi.NewOptString(fmt.Sprintf("%d", id))}, nil
 }
 
 // GET /api/v1/variable-cost/by-cost-center/{id-cost-center}
