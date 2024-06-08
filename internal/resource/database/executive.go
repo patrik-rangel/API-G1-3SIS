@@ -43,11 +43,38 @@ func (d *Database) InsertEmployee(ctx context.Context, employee entity.Employee)
 }
 
 func (d *Database) InsertExecutive(ctx context.Context, user entity.User, costCenterId int) error {
+	id, err := d.queries.SelectUserExecutive(ctx, sqlc.SelectUserExecutiveParams{
+		Nome:  user.Name,
+		Email: user.Email,
+	})
+	if err != nil {
+		d.log.Error(err.Error())
+		return validateExecutiveErrSql(err)
+	}
+
+	err = d.queries.InsertExecutive(ctx, sqlc.InsertExecutiveParams{
+		FkCentroDeCustos: int32(costCenterId),
+		FkUsuario:        id,
+	})
+	if err != nil {
+		d.log.Error(err.Error())
+		return validateExecutiveErrSql(err)
+	}
+
 	return nil
 }
 
-func (d *Database) InsertUserByExecutive(ctx context.Context, user entity.User) error {
-	return nil
+func (d *Database) SelectUserByEmployee(ctx context.Context, user entity.User) (string, error) {
+	password, err := d.queries.SelectUserEmployee(ctx, sqlc.SelectUserEmployeeParams{
+		Nome:  user.Name,
+		Email: user.Email,
+	})
+	if err != nil {
+		d.log.Error(err.Error())
+		return "", validateExecutiveErrSql(err)
+	}
+
+	return password, nil
 }
 
 func generateRandomULID() ulid.ULID {
@@ -66,8 +93,10 @@ func generateRandomULID() ulid.ULID {
 
 func validateExecutiveErrSql(err error) error {
 	switch {
+	case strings.Contains(err.Error(), "sql: no rows in result set"):
+		return entity.ErrGeneric
 	case strings.Contains(err.Error(), "duplicate key value violates unique constraint"):
-		return entity.ErrUserExists
+		return entity.ErrExecutiveExists
 	}
 
 	return err

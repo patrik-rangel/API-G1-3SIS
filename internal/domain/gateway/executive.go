@@ -8,5 +8,5 @@ import (
 type Executive interface {
 	InsertEmployee(ctx context.Context, employee entity.Employee) error
 	InsertExecutive(ctx context.Context, user entity.User, costCenterId int) error
-	InsertUserByExecutive(ctx context.Context, user entity.User) error
+	SelectUserByEmployee(ctx context.Context, user entity.User) (string, error)
 }

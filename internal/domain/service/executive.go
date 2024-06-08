@@ -14,7 +14,7 @@ var _ Executive = (*ExecutiveService)(nil)
 type Executive interface {
 	RegisterEmployee(ctx context.Context, employee entity.Employee) error
 	RegisterExecutive(ctx context.Context, user entity.User, costCenterId int) error
-	CreateUserByExecutive(ctx context.Context, user entity.User) error
+	CreateUserByExecutive(ctx context.Context, user entity.User) (string, error)
 }
 
 type ExecutiveService struct {
@@ -37,6 +37,6 @@ func (e *ExecutiveService) RegisterExecutive(ctx context.Context, user entity.Us
 	return e.gtw.InsertExecutive(ctx, user, costCenterId)
 }
 
-func (e *ExecutiveService) CreateUserByExecutive(ctx context.Context, user entity.User) error {
-	return e.gtw.InsertUserByExecutive(ctx, user)
+func (e *ExecutiveService) CreateUserByExecutive(ctx context.Context, user entity.User) (string, error) {
+	return e.gtw.SelectUserByEmployee(ctx, user)
 }
