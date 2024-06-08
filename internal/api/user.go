@@ -32,7 +32,6 @@ func (h *Handler) RegisterUser(ctx context.Context, req openapi.OptUser) (openap
 	}
 
 	err := h.userService.Register(ctx, user)
-
 	if err != nil {
 		return nil, err
 	}
