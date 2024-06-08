@@ -112,6 +112,14 @@ paths:
           <<: *default
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id_cost_center:
+                    type: string
+                    description: Id Cost Center
         '400':
           description: Bad Request
           content:
@@ -137,7 +145,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  '/api/v1/cost-center/{id-cost-center}':
+  '/api/v1/cost-center/{id-executive}':
     get:
       summary: Get Cost Center by ID
       operationId: GetCostCenterById
@@ -147,7 +155,7 @@ paths:
         - authorization: [] 
       parameters:
         - in: path
-          name: id-cost-center
+          name: id-executive
           required: true
           schema:
             type: integer
@@ -213,26 +221,11 @@ paths:
                 email:
                   type: string
                   description: Executive email address
-                password:  
-                  type: string
-                  description: Executive password
-                type_user:
-                  $ref: '#/components/schemas/TypeUser'
       responses:
         default:
           <<: *default
         '201':
           description: Executive registered successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message (e.g., "Executive registered successfully")
-                  user:
-                    $ref: '#/components/schemas/User'
         '400':
           description: Bad Request
           content:
@@ -290,11 +283,6 @@ paths:
                 email:
                   type: string
                   description: Employee email address
-                password:  
-                  type: string
-                  description: Employee password
-                type_user:
-                  $ref: '#/components/schemas/TypeUser'
       responses:
         default:
           <<: *default
@@ -346,7 +334,7 @@ paths:
       tags:
         - executive
       security:
-        - authorization: []  
+        - authorization: [] 
       requestBody:
         content:
           application/json:
@@ -443,7 +431,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  /api/v1/variable-cost/{id-variable-expense}:
+  /api/v1/variable-cost:
     patch:
       summary: Approval Variable Exepense
       operationId: ApprovalVariableExepense
@@ -451,13 +439,6 @@ paths:
         - executive
       security:
         - authorization: []
-      parameters:
-        - in: path
-          name: id-variable-expense
-          required: true
-          schema:
-            type: integer
-            description: Unique variable expense identifier
       requestBody:
         content:
           application/json:
@@ -493,7 +474,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  /api/v1/variable-cost:
+  '/api/v1/create-variable-cost/{id-cost-center}':
     post:
       summary: Add Variable Expense
       operationId: AddVariableExpense
@@ -501,6 +482,13 @@ paths:
         - cost
       security:
         - authorization: []
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
       requestBody:
         content:
           application/json:
@@ -713,9 +701,6 @@ components:
         approval:
           type: boolean
           description: Expense approval status (true or false)
-        fk_cost_center:
-          type: integer
-          description: Foreign key referencing the cost center
           
     ListVariableExpense:
       description: List of variable expenses for the cost center
