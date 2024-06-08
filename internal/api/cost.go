@@ -31,9 +31,21 @@ func (h *Handler) AddVariableExpense(ctx context.Context, req openapi.OptVariabl
 	return &openapi.AddVariableExpenseCreated{}, nil
 }
 
-// PATCH /api/v1/variable-cost/{id-variable-expense}
-func (h *Handler) ApprovalVariableExepense(ctx context.Context, req openapi.OptVariableExpenseUpdate, params openapi.ApprovalVariableExepenseParams) (openapi.ApprovalVariableExepenseRes, error) {
-	return nil, nil
+// PATCH /api/v1/create-variable-cost
+func (h *Handler) ApprovalVariableExepense(ctx context.Context, req openapi.OptVariableExpenseUpdate) (openapi.ApprovalVariableExepenseRes, error) {
+	variableExpense := entity.VariableExepense{
+		Date:         req.Value.Date,
+		Responsibile: req.Value.Responsible,
+		Type:         req.Value.VariableType,
+		Approval:     req.Value.Approved,
+	}
+
+	err := h.costService.ApprovalVariableExepense(ctx, variableExpense)
+	if err != nil {
+		return nil, err
+	}
+
+	return &openapi.ApprovalVariableExepenseOK{}, nil
 }
 
 // POST /api/v1/cost-centers
@@ -69,7 +81,7 @@ func (h *Handler) GetEmployeesByCostCenter(ctx context.Context, params openapi.G
 }
 
 func SetBool(v openapi.OptBool) bool {
-	if v.Value == false {
+	if !v.Value {
 		return false
 	} else {
 		return true

@@ -31,7 +31,18 @@ func (d *Database) InsertVariableExpense(ctx context.Context, variableExepense e
 	return nil
 }
 
-func (d *Database) UpdateVariableExepense(ctx context.Context, id int, variableExepense entity.VariableExepense) error {
+func (d *Database) UpdateVariableExepense(ctx context.Context, variableExepense entity.VariableExepense) error {
+	err := d.queries.UpdateVariableExpense(ctx, sqlc.UpdateVariableExpenseParams{
+		Aprovado:     variableExepense.Approval,
+		Data:         variableExepense.Date,
+		Responsavel:  variableExepense.Responsibile,
+		TipoVariavel: variableExepense.Type,
+	})
+	if err != nil {
+		d.log.Error(err.Error())
+		return validateCostErrSql(err)
+	}
+
 	return nil
 }
 
