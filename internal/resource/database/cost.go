@@ -80,14 +80,36 @@ func (d *Database) InsertCostCenter(ctx context.Context, costCenter entity.CostC
 }
 
 func (d *Database) GetVariableExpensesByCostCenter(ctx context.Context, id int) ([]*entity.VariableExepense, error) {
-	return nil, nil
+	variablesExpense, err := d.queries.SelectAllVariableExpenseByIdCostCenter(ctx, int32(id))
+	if err != nil {
+		d.log.Error(err.Error())
+		return nil, validateCostErrSql(err)
+	}
+
+	variablesExpenseEntity := make([]*entity.VariableExepense, 0, len(variablesExpense))
+
+	for _, ve := range variablesExpense {
+		variablesExpenseEntity = append(variablesExpenseEntity, &entity.VariableExepense{
+			Type:          ve.TipoVariavel,
+			Describe:      ve.DescTransacao.String,
+			Value:         ve.Valor,
+			Date:          ve.Data,
+			Responsibile:  ve.Responsavel,
+			Category:      ve.CategoriaDespesa,
+			PaymentMethod: ve.MetodoPagto.String,
+			Observation:   ve.Obs.String,
+			Approval:      ve.Aprovado,
+		})
+	}
+
+	return variablesExpenseEntity, nil
 }
 
 func (d *Database) GetCostCenterById(ctx context.Context, id int) (*entity.CostCenter, error) {
 	return nil, nil
 }
 
-func (d *Database) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.VariableExepense, error) {
+func (d *Database) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.Employee, error) {
 	return nil, nil
 }
 
@@ -113,3 +135,10 @@ func validateCostErrSql(err error) error {
 
 	return err
 }
+
+/* func nullStringToString (v sql.NullString) string {
+	if !v.Valid || v.String == "" {
+		return ""
+	}
+	return v.String
+} */

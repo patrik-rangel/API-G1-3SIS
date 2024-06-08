@@ -67,7 +67,28 @@ func (h *Handler) CreateCostCenter(ctx context.Context, req openapi.OptCostCente
 
 // GET /api/v1/variable-cost/by-cost-center/{id-cost-center}
 func (h *Handler) GetVariableExpensesByCostCenter(ctx context.Context, params openapi.GetVariableExpensesByCostCenterParams) (openapi.GetVariableExpensesByCostCenterRes, error) {
-	return nil, nil
+	variablesExpenses, err := h.costService.GetVariableExpensesByCostCenter(ctx, params.IDCostCenter)
+	if err != nil {
+		return nil, err
+	}
+
+	var res openapi.ListVariableExpense = make([]openapi.VariableExpense, 0, len(variablesExpenses))
+
+	for _, ve := range variablesExpenses {
+		res = append(res, openapi.VariableExpense{
+			TypeVariable:  ve.Type,
+			Describe:      ve.Describe,
+			Value:         ve.Value,
+			Date:          ve.Date,
+			Responsible:   ve.Responsibile,
+			Category:      ve.Category,
+			PaymentMethod: ve.PaymentMethod,
+			Obs:           ve.Observation,
+			Approval:      openapi.NewOptBool(ve.Approval),
+		})
+	}
+
+	return &res, nil
 }
 
 // GET /api/v1/cost-center/{id-cost-center}

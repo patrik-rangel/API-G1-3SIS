@@ -17,7 +17,7 @@ type Cost interface {
 	CreateCostCenter(ctx context.Context, costCenter entity.CostCenter) (int, error)
 	GetVariableExpensesByCostCenter(ctx context.Context, id int) ([]*entity.VariableExepense, error)
 	GetCostCenterById(ctx context.Context, id int) (*entity.CostCenter, error)
-	GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.VariableExepense, error)
+	GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.Employee, error)
 }
 
 type CostService struct {
@@ -52,6 +52,6 @@ func (c *CostService) GetCostCenterById(ctx context.Context, id int) (*entity.Co
 	return c.gtw.GetCostCenterById(ctx, id)
 }
 
-func (c *CostService) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.VariableExepense, error) {
+func (c *CostService) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.Employee, error) {
 	return c.gtw.GetEmployeesByCostCenter(ctx, id)
 }
