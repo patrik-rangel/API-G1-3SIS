@@ -108,7 +108,24 @@ func (h *Handler) GetCostCenterById(ctx context.Context, params openapi.GetCostC
 
 // GET /api/v1/employees/by-cost-center/{id-cost-center}
 func (h *Handler) GetEmployeesByCostCenter(ctx context.Context, params openapi.GetEmployeesByCostCenterParams) (openapi.GetEmployeesByCostCenterRes, error) {
-	return nil, nil
+	employees, err := h.costService.GetEmployeesByCostCenter(ctx, params.IDCostCenter)
+	if err != nil {
+		return nil, err
+	}
+
+	var res openapi.ListEmployee = make([]openapi.Employee, 0, len(employees))
+
+	for _, e := range employees {
+		res = append(res, openapi.Employee{
+			Name:     e.Name,
+			Email:    e.Email,
+			JobTitle: e.JobTitle,
+			Salary:   e.Salary,
+			Position: e.Position,
+		})
+	}
+
+	return &res, nil
 }
 
 func SetBool(v openapi.OptBool) bool {

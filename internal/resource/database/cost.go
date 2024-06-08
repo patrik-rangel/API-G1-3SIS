@@ -129,7 +129,25 @@ func (d *Database) GetCostCenterById(ctx context.Context, id int) (*entity.CostC
 }
 
 func (d *Database) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.Employee, error) {
-	return nil, nil
+	employees, err := d.queries.SelectEmployeesByCostCenterId(ctx, int32(id))
+	if err != nil {
+		d.log.Error(err.Error())
+		return nil, validateCostErrSql(err)
+	}
+
+	employeesEntity := make([]*entity.Employee, 0, len(employees))
+
+	for _, e := range employees {
+		employeesEntity = append(employeesEntity, &entity.Employee{
+			Name:     e.Nome.String,
+			Email:    e.Email.String,
+			JobTitle: e.Cargo,
+			Salary:   e.Salario,
+			Position: e.Senioridade,
+		})
+	}
+
+	return employeesEntity, nil
 }
 
 func getYearStartAndEnd() (time.Time, time.Time) {
