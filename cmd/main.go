@@ -25,13 +25,11 @@ func main() {
 	db := connDb()
 	dbx := database.New(db)
 
-	executiveGtw := dbx
-	userGtw := dbx
+	executiveService := service.NewExecutive(dbx)
+	userService := service.NewUser(dbx)
+	costService := service.NewCost(dbx)
 
-	executiveService := service.NewExecutive(executiveGtw)
-	userService := service.NewUser(userGtw)
-
-	handler := api.NewHandler(userService, executiveService)
+	handler := api.NewHandler(userService, executiveService, costService)
 	security := api.NewMySecurityHandler(os.Getenv("AUTHORIZATION_SERVICE"))
 	server, err := openapi.NewServer(handler, security)
 	if err != nil {
