@@ -14,14 +14,16 @@ import (
 var _ openapi.Handler = (*Handler)(nil)
 
 type Handler struct {
-	log         *zap.Logger
-	userService service.User
+	log              *zap.Logger
+	userService      service.User
+	executiveService service.Executive
 }
 
-func NewHandler(c service.User) *Handler {
+func NewHandler(u service.User, e service.Executive) *Handler {
 	return &Handler{
-		log:         logger.NewLogger().Named("layer-handler"),
-		userService: c,
+		log:              logger.NewLogger().Named("layer-handler"),
+		userService:      u,
+		executiveService: e,
 	}
 }
 
@@ -31,8 +33,14 @@ func (h *Handler) NewError(ctx context.Context, err error) *openapi.ErrorRespons
 
 	switch {
 	case errors.Is(err, entity.ErrNotFoundUser):
-		statusCode = 401
+		statusCode = 404
 		msg = entity.ErrNotFoundUser.Error()
+	case errors.Is(err, entity.ErrDatabase):
+		statusCode = 500
+		msg = entity.ErrDatabase.Error()
+	case errors.Is(err, entity.ErrUserExists):
+		statusCode = 409
+		msg = entity.ErrUserExists.Error()
 	}
 
 	return &openapi.ErrorResponseStatusCode{
