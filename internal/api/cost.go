@@ -8,8 +8,26 @@ import (
 	"github.com/patrik-rangel/API-G1-3SIS/internal/domain/entity"
 )
 
-// POST /api/v1/variable-cost
-func (h *Handler) AddVariableExpense(ctx context.Context, req openapi.OptVariableExpense) (openapi.AddVariableExpenseRes, error) {
+// POST /api/v1/create-variable-cost/{id-cost-center}
+func (h *Handler) AddVariableExpense(ctx context.Context, req openapi.OptVariableExpense, params openapi.AddVariableExpenseParams) (openapi.AddVariableExpenseRes, error) {
+	variableExpense := entity.VariableExepense{
+		Type:          req.Value.TypeVariable,
+		Describe:      req.Value.Describe,
+		Value:         req.Value.Value,
+		Date:          req.Value.Date,
+		Responsibile:  req.Value.Responsible,
+		Category:      req.Value.Category,
+		PaymentMethod: req.Value.PaymentMethod,
+		Observation:   req.Value.Obs,
+		Approval:      SetBool(req.Value.Approval),
+		CostCenter:    params.IDCostCenter,
+	}
+
+	err := h.costService.AddVariableExpense(ctx, variableExpense)
+	if err != nil {
+		return nil, err
+	}
+
 	return &openapi.AddVariableExpenseCreated{}, nil
 }
 
@@ -48,4 +66,12 @@ func (h *Handler) GetCostCenterById(ctx context.Context, params openapi.GetCostC
 // GET /api/v1/employees/by-cost-center/{id-cost-center}
 func (h *Handler) GetEmployeesByCostCenter(ctx context.Context, params openapi.GetEmployeesByCostCenterParams) (openapi.GetEmployeesByCostCenterRes, error) {
 	return nil, nil
+}
+
+func SetBool(v openapi.OptBool) bool {
+	if v.Value == false {
+		return false
+	} else {
+		return true
+	}
 }

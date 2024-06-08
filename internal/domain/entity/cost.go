@@ -25,8 +25,8 @@ type VariableExepense struct {
 	Category      string
 	PaymentMethod string
 	Observation   string
-	Approval      string
-	CostCenter    string
+	Approval      bool
+	CostCenter    int
 }
 
 func (t TypeCostCenter) String() string {

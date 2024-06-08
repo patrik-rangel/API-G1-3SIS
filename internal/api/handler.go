@@ -49,6 +49,9 @@ func (h *Handler) NewError(ctx context.Context, err error) *openapi.ErrorRespons
 	case errors.Is(err, entity.ErrCostCenterExists):
 		statusCode = 409
 		msg = entity.ErrCostCenterExists.Error()
+	case errors.Is(err, entity.ErrVariableExpenseInvalid):
+		statusCode = 400
+		msg = entity.ErrVariableExpenseInvalid.Error()
 	}
 
 	return &openapi.ErrorResponseStatusCode{

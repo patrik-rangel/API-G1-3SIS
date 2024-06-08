@@ -2,14 +2,32 @@ package database
 
 import (
 	"context"
+	"database/sql"
 	"strings"
 	"time"
 
-	sql "github.com/patrik-rangel/API-G1-3SIS/generated/sqlc"
+	sqlc "github.com/patrik-rangel/API-G1-3SIS/generated/sqlc"
 	"github.com/patrik-rangel/API-G1-3SIS/internal/domain/entity"
 )
 
 func (d *Database) InsertVariableExpense(ctx context.Context, variableExepense entity.VariableExepense) error {
+	err := d.queries.InsertVariableExpense(ctx, sqlc.InsertVariableExpenseParams{
+		TipoVariavel:     variableExepense.Type,
+		Valor:            variableExepense.Value,
+		CategoriaDespesa: variableExepense.Category,
+		DescTransacao:    sql.NullString{String: variableExepense.Describe, Valid: true},
+		MetodoPagto:      sql.NullString{String: variableExepense.PaymentMethod, Valid: true},
+		Obs:              sql.NullString{String: variableExepense.Observation, Valid: true},
+		Data:             variableExepense.Date,
+		Responsavel:      variableExepense.Responsibile,
+		Aprovado:         variableExepense.Approval,
+		FkCentroDeCustos: int32(variableExepense.CostCenter),
+	})
+	if err != nil {
+		d.log.Error(err.Error())
+		return validateCostErrSql(err)
+	}
+
 	return nil
 }
 
@@ -20,7 +38,7 @@ func (d *Database) UpdateVariableExepense(ctx context.Context, id int, variableE
 func (d *Database) InsertCostCenter(ctx context.Context, costCenter entity.CostCenter) (int, error) {
 	ds, de := getYearStartAndEnd()
 
-	budget, err := d.queries.InsertAnnualBudget(ctx, sql.InsertAnnualBudgetParams{
+	budget, err := d.queries.InsertAnnualBudget(ctx, sqlc.InsertAnnualBudgetParams{
 		DataInicio:     ds,
 		DataFim:        de,
 		OrcamentoAnual: costCenter.AnnualBudget,
@@ -36,7 +54,7 @@ func (d *Database) InsertCostCenter(ctx context.Context, costCenter entity.CostC
 		return 0, validateCostErrSql(err)
 	}
 
-	costCenterInsert, err := d.queries.InsertCostCenter(ctx, sql.InsertCostCenterParams{
+	costCenterInsert, err := d.queries.InsertCostCenter(ctx, sqlc.InsertCostCenterParams{
 		NomeCentro:       costCenter.Name,
 		Tipo:             costCenter.Type.String(),
 		FkOrcamentoAnual: budget.IDOrcamentoAnual,
@@ -78,8 +96,8 @@ func getYearStartAndEnd() (time.Time, time.Time) {
 
 func validateCostErrSql(err error) error {
 	switch {
-	case strings.Contains(err.Error(), "duplicate key value violates unique constraint"):
-		return entity.ErrCostCenterExists
+	case strings.Contains(err.Error(), `duplicate key value violates unique constraint "gastos_variaveis_tipo_variavel_data_responsavel_key"`):
+		return entity.ErrVariableExpenseInvalid
 	}
 
 	return err
