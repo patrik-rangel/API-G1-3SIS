@@ -91,9 +91,19 @@ func (h *Handler) GetVariableExpensesByCostCenter(ctx context.Context, params op
 	return &res, nil
 }
 
-// GET /api/v1/cost-center/{id-cost-center}
+// GET /api/v1/cost-center/{id-executive}
 func (h *Handler) GetCostCenterById(ctx context.Context, params openapi.GetCostCenterByIdParams) (openapi.GetCostCenterByIdRes, error) {
-	return &openapi.CostCenter{}, nil
+	costCenter, err := h.costService.GetCostCenterById(ctx, params.IDExecutive)
+	if err != nil {
+		return nil, err
+	}
+
+	return &openapi.CostCenter{
+		Area:           costCenter.Area,
+		CostCenterName: costCenter.Name,
+		AnnualBudget:   costCenter.AnnualBudget,
+		TypeCostCenter: openapi.CostCenterTypeCostCenter(costCenter.Type.String()),
+	}, nil
 }
 
 // GET /api/v1/employees/by-cost-center/{id-cost-center}

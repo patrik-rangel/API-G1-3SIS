@@ -106,7 +106,26 @@ func (d *Database) GetVariableExpensesByCostCenter(ctx context.Context, id int) 
 }
 
 func (d *Database) GetCostCenterById(ctx context.Context, id int) (*entity.CostCenter, error) {
-	return nil, nil
+	executive, err := d.queries.SelectExecutiveById(ctx, int32(id))
+	if err != nil {
+		d.log.Error(err.Error())
+		return nil, validateCostErrSql(err)
+	}
+
+	costCenter, err := d.queries.SelectCostCenterById(ctx, executive.FkCentroDeCustos)
+	if err != nil {
+		d.log.Error(err.Error())
+		return nil, validateCostErrSql(err)
+	}
+
+	res := &entity.CostCenter{
+		Area:         costCenter.NomeArea,
+		Name:         costCenter.NomeCentro,
+		AnnualBudget: costCenter.OrcamentoAnual,
+		Type:         entity.TypeCostCenter(costCenter.Tipo),
+	}
+
+	return res, nil
 }
 
 func (d *Database) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.Employee, error) {
@@ -131,6 +150,8 @@ func validateCostErrSql(err error) error {
 	switch {
 	case strings.Contains(err.Error(), `duplicate key value violates unique constraint "gastos_variaveis_tipo_variavel_data_responsavel_key"`):
 		return entity.ErrVariableExpenseInvalid
+	case strings.Contains(err.Error(), "sql: no rows in result set"):
+		return entity.ErrNotFoundCostCenter
 	}
 
 	return err
