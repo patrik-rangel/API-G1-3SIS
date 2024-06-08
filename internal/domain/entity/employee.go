@@ -6,5 +6,5 @@ type Employee struct {
 	JobTitle   string
 	Salary     float64
 	Position   string
-	CostCenter string
+	CostCenter int
 }

@@ -4,11 +4,26 @@ import (
 	"context"
 
 	"github.com/patrik-rangel/API-G1-3SIS/generated/openapi"
+	"github.com/patrik-rangel/API-G1-3SIS/internal/domain/entity"
 )
 
-// POST api/v1/register
+// POST api/v1/register/{id_cost_center}
 func (h *Handler) RegisterEmployeeByExecutive(ctx context.Context, req openapi.OptEmployee) (openapi.RegisterEmployeeByExecutiveRes, error) {
-	return nil, nil
+	employee := entity.Employee{
+		Name:       req.Value.Name,
+		Email:      req.Value.Email,
+		JobTitle:   req.Value.JobTitle,
+		Salary:     req.Value.Salary,
+		Position:   req.Value.Position,
+		CostCenter: req.Value.FkCostCenter.Value,
+	}
+
+	err := h.executiveService.RegisterEmployee(ctx, employee)
+	if err != nil {
+		return nil, err
+	}
+
+	return &openapi.RegisterEmployeeByExecutiveCreated{}, nil
 }
 
 // POST /api/v1/register-executive/{id_cost_center}
