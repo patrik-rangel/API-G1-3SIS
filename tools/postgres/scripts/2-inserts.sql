@@ -255,68 +255,68 @@ INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES
 
 
 -- 1. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(1, 1, 1);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(1, 1);
 
 -- 2. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(2, 2, 1);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(2, 2);
 
 -- 3. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(3, 3, 1);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(3, 3);
 
 
 -- 4. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(4, 4, 2);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(4, 4);
 
 -- 5. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(5, 5, 2);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(5, 5);
 
 -- 6. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(6, 6, 2);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(6, 6);
 
 
 -- 7. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(7, 7, 3);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(7, 7);
 
 -- 8. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(8, 8, 3);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(8, 8);
 
 -- 9. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(9, 9, 3);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(9, 9);
 
 
 -- 10. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(10, 10, 4);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(10, 10);
 
 -- 11. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(11, 11, 4);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(11, 11);
 
 -- 12. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(12, 12, 4);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(12, 12);
 
 
 -- 13. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(13, 13, 5);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(13, 13);
 
 -- 14. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(14, 14, 5);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(14, 14);
 
 -- 15. Executivo
-INSERT INTO executivo (fk_centro_de_custos, fk_usuario, fk_area) VALUES
-(15, 15, 5);
+INSERT INTO executivo (fk_centro_de_custos, fk_usuario) VALUES
+(15, 15);
 
 
 -- 16. Beatriz Lima (Desenvolvimento de Software)

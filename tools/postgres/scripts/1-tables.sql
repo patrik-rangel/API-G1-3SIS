@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "orcamento_anual" (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS "area" (
   "id_area" SERIAL PRIMARY KEY,
-  "nome_area" VARCHAR(45) NOT NULL
+  "nome_area" VARCHAR(45) NOT NULL UNIQUE
 );
 
 -- -----------------------------------------------------
@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS "centro_de_custos" (
   "nome_centro" VARCHAR(45) NOT NULL,
   "tipo" VARCHAR(45) NOT NULL,
   "fk_orcamento_anual" INTEGER NOT NULL REFERENCES "orcamento_anual" ("id_orcamento_anual") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  "fk_area" INTEGER NOT NULL REFERENCES "area" ("id_area") ON DELETE NO ACTION ON UPDATE NO ACTION
+  "fk_area" INTEGER NOT NULL REFERENCES "area" ("id_area") ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT unique_centro_de_custos UNIQUE (nome_centro, fk_area)
 );
 
 -- -----------------------------------------------------
@@ -43,9 +44,8 @@ CREATE TABLE IF NOT EXISTS "usuario" (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS "executivo" (
   "Id_executivo" SERIAL PRIMARY KEY,
-  "fk_area" INTEGER NOT NULL REFERENCES "area" ("id_area") ON DELETE NO ACTION ON UPDATE NO ACTION,
   "fk_centro_de_custos" INTEGER NOT NULL REFERENCES "centro_de_custos" ("id_centro_de_custos") ON DELETE NO ACTION ON UPDATE NO ACTION,
-  "fk_usuario" INTEGER NOT NULL REFERENCES "usuario" ("id_usuario") ON DELETE NO ACTION ON UPDATE NO ACTION
+  "fk_usuario" INTEGER NOT NULL REFERENCES "usuario" ("id_usuario") ON DELETE NO ACTION ON UPDATE NO ACTION UNIQUE
 );
 
 -- -----------------------------------------------------
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS "gastos_variaveis" (
   "obs" VARCHAR(200),
   "data" TIMESTAMP NOT NULL,
   "responsavel" VARCHAR(65) NOT NULL,
-  "aprovado" BOOLEAN NOT NULL,
+  "aprovado" BOOLEAN NOT NULL DEFAULT FALSE,
   "fk_centro_de_custos" INTEGER NOT NULL,
   UNIQUE(tipo_variavel, data, responsavel)
 );
