@@ -12,7 +12,7 @@ import (
 var _ User = (*UserService)(nil)
 
 type User interface {
-	Login(ctx context.Context, user entity.User) error
+	Login(ctx context.Context, user entity.User) (*entity.IdsUser, error)
 	Register(ctx context.Context, user entity.User) error
 }
 
@@ -28,7 +28,7 @@ func NewUser(gtw gateway.User) *UserService {
 	}
 }
 
-func (u *UserService) Login(ctx context.Context, user entity.User) error {
+func (u *UserService) Login(ctx context.Context, user entity.User) (*entity.IdsUser, error) {
 	return u.gtw.GetUser(ctx, user)
 }
 

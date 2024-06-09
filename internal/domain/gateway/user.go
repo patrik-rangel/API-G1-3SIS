@@ -8,7 +8,7 @@ import (
 
 type User interface {
 	// Login
-	GetUser(ctx context.Context, user entity.User) error
+	GetUser(ctx context.Context, user entity.User) (*entity.IdsUser, error)
 	// Register
 	InsertUser(ctx context.Context, user entity.User) error
 }

@@ -14,6 +14,12 @@ type User struct {
 	TypeUser TypeUser
 }
 
+type IdsUser struct {
+	IdExecutive  int
+	IdCostCenter int
+	TypeUser     TypeUser
+}
+
 func (t TypeUser) String() string {
 	return string(t)
 }

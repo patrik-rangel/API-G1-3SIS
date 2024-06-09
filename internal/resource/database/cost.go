@@ -168,6 +168,8 @@ func validateCostErrSql(err error) error {
 	switch {
 	case strings.Contains(err.Error(), `duplicate key value violates unique constraint "gastos_variaveis_tipo_variavel_data_responsavel_key"`):
 		return entity.ErrVariableExpenseInvalid
+	case strings.Contains(err.Error(), `duplicate key value violates unique constraint "unique_centro_de_custos"`):
+		return entity.ErrCostCenterExists
 	case strings.Contains(err.Error(), "sql: no rows in result set"):
 		return entity.ErrNotFoundCostCenter
 	}

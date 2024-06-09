@@ -14,12 +14,16 @@ func (h *Handler) LoginUser(ctx context.Context, req openapi.OptLoginUserReq) (o
 		Password: req.Value.Password.Value,
 	}
 
-	err := h.userService.Login(ctx, user)
+	ids, err := h.userService.Login(ctx, user)
 	if err != nil {
 		return nil, err
 	}
 
-	return &openapi.LoginUserOK{}, nil
+	return &openapi.LoginUserOK{
+		IDExecutive:  openapi.NewOptInt(ids.IdExecutive),
+		IDCostCenter: openapi.NewOptInt(ids.IdCostCenter),
+		TypeUser:     openapi.NewOptString(ids.TypeUser.String()),
+	}, nil
 }
 
 // POST /api/v1/register
