@@ -79,6 +79,20 @@ paths:
           <<: *default
         '200':
           description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id_executive:
+                    type: integer
+                    description: ID Executive
+                  id_cost_center:
+                    type: integer
+                    description: ID Cost Center
+                  type_user:
+                    type: string
+                    description: Type User
         '400':
           description: Bad Request (e.g., invalid credentials)
           content:
@@ -226,6 +240,14 @@ paths:
           <<: *default
         '201':
           description: Executive registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id_executive:
+                    type: string
+                    description: ID Executive
         '400':
           description: Bad Request
           content:
