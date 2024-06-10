@@ -20,6 +20,7 @@ func (h *Handler) LoginUser(ctx context.Context, req openapi.OptLoginUserReq) (o
 	}
 
 	return &openapi.LoginUserOK{
+		Name:         openapi.NewOptString(ids.NameUser),
 		IDExecutive:  openapi.NewOptInt(ids.IdExecutive),
 		IDCostCenter: openapi.NewOptInt(ids.IdCostCenter),
 		TypeUser:     openapi.NewOptString(ids.TypeUser.String()),

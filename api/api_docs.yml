@@ -93,6 +93,9 @@ paths:
                   type_user:
                     type: string
                     description: Type User
+                  name:
+                    type: string
+                    description: Name User
         '400':
           description: Bad Request (e.g., invalid credentials)
           content:

@@ -15,6 +15,7 @@ type User struct {
 }
 
 type IdsUser struct {
+	NameUser     string
 	IdExecutive  int
 	IdCostCenter int
 	TypeUser     TypeUser

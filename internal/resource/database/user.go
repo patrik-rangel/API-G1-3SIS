@@ -33,6 +33,7 @@ func (d *Database) GetUser(ctx context.Context, user entity.User) (*entity.IdsUs
 	typeUser := userRows.TipoUsuario
 
 	ids := &entity.IdsUser{
+		NameUser:     userRows.Nome,
 		IdExecutive:  int(idsRows.IdExecutivo),
 		IdCostCenter: int(idsRows.FkCentroDeCustos),
 		TypeUser:     entity.TypeUser(typeUser),
