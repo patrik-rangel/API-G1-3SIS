@@ -14,6 +14,8 @@ import (
 	"github.com/patrik-rangel/API-G1-3SIS/internal/api"
 	"github.com/patrik-rangel/API-G1-3SIS/internal/domain/service"
 	"github.com/patrik-rangel/API-G1-3SIS/internal/resource/database"
+
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -36,7 +38,9 @@ func main() {
 		panic(err)
 	}
 
-	http.ListenAndServe(":8080", gzhttp.GzipHandler(server))
+	serverWithCors := cors.Default().Handler(server)
+
+	http.ListenAndServe(":8080", gzhttp.GzipHandler(serverWithCors))
 }
 
 func connDb() *sqlx.DB {
