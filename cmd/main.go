@@ -38,7 +38,7 @@ func main() {
 		panic(err)
 	}
 
-	serverWithCors := cors.Default().Handler(server)
+	serverWithCors := cors.AllowAll().Handler(server)
 
 	http.ListenAndServe(":8080", gzhttp.GzipHandler(serverWithCors))
 }
