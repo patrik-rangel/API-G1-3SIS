@@ -18,6 +18,12 @@ WHERE
     fk_usuario = $1;
 
 
+-- name: GetIdsEmployee :one
+SELECT * FROM funcionario 
+WHERE 
+    fk_usuario = $1;
+
+
 -- name: InsertEmployeeByIdCostCenter :exec
 INSERT INTO funcionario (nome, email, cargo, senioridade, salario, fk_centro_de_custos, fk_usuario)
 VALUES ($1, $2, $3, $4, $5, $6, $7);

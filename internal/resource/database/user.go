@@ -23,29 +23,34 @@ func (d *Database) GetUser(ctx context.Context, user entity.User) (*entity.IdsUs
 		return nil, errors.New("USER NOT FOUND")
 	}
 
+	idUser := userRows.IDUsuario
 	if userRows.TipoUsuario == "EXEC" {
-		idUser := userRows.IDUsuario
 		idsRows, err := d.queries.GetIdsExecutive(ctx, idUser)
 		if err != nil {
 			d.log.Error(err.Error())
 			return nil, validateUserErrSql(err)
 		}
-	
-		typeUser := userRows.TipoUsuario
-	
-		ids := &entity.IdsUser{
+
+		idsExecutive := &entity.IdsUser{
 			NameUser:     userRows.Nome,
 			IdExecutive:  int(idsRows.IdExecutivo),
 			IdCostCenter: int(idsRows.FkCentroDeCustos),
-			TypeUser:     entity.TypeUser(typeUser),
+			TypeUser:     entity.TypeUser(userRows.TipoUsuario),
 		}
-		return ids, nil
-	}
+		return idsExecutive, nil
+	} else {
+		idsRows, err := d.queries.GetIdsEmployee(ctx, idUser)
+		if err != nil {
+			d.log.Error(err.Error())
+			return nil, validateUserErrSql(err)
+		}
 
-	return &entity.IdsUser{
-		NameUser: userRows.Nome,
-		TypeUser: entity.TypeUser(userRows.TipoUsuario),
-	}, nil
+		return &entity.IdsUser{
+			IdCostCenter: int(idsRows.FkCentroDeCustos),
+			NameUser:     userRows.Nome,
+			TypeUser:     entity.TypeUser(userRows.TipoUsuario),
+		}, nil
+	}
 
 }
 
