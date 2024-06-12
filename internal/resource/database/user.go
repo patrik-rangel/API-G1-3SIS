@@ -44,6 +44,7 @@ func (d *Database) GetUser(ctx context.Context, user entity.User) (*entity.IdsUs
 
 	return &entity.IdsUser{
 		NameUser: userRows.Nome,
+		TypeUser: entity.TypeUser(userRows.TipoUsuario),
 	}, nil
 
 }
