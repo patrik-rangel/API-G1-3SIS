@@ -17,10 +17,6 @@ SELECT * FROM executivo
 WHERE 
     fk_usuario = $1;
 
--- name: GetUserEmployee :one
-SELECT * FROM usuario
-WHERE
-    fr
 
 -- name: InsertEmployeeByIdCostCenter :exec
 INSERT INTO funcionario (nome, email, cargo, senioridade, salario, fk_centro_de_custos, fk_usuario)
