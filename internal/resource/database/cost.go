@@ -105,6 +105,35 @@ func (d *Database) GetVariableExpensesByCostCenter(ctx context.Context, id int) 
 	return variablesExpenseEntity, nil
 }
 
+func (d *Database) GetVariableExpensesByEmployee(ctx context.Context, name string) ([]*entity.VariableExepense, error) {
+	variablesExpense, err := d.queries.SelectVariableExpenseByEmployee(ctx, name)
+	if err != nil {
+		d.log.Error(err.Error())
+		if strings.Contains(err.Error(), "sql: no rows in result set") {
+			return []*entity.VariableExepense{}, nil
+		}
+		return nil, validateCostErrSql(err)
+	}
+
+	variablesExpenseEntity := make([]*entity.VariableExepense, 0, len(variablesExpense))
+
+	for _, ve := range variablesExpense {
+		variablesExpenseEntity = append(variablesExpenseEntity, &entity.VariableExepense{
+			Type:          ve.TipoVariavel,
+			Describe:      ve.DescTransacao.String,
+			Value:         ve.Valor,
+			Date:          ve.Data,
+			Responsibile:  ve.Responsavel,
+			Category:      ve.CategoriaDespesa,
+			PaymentMethod: ve.MetodoPagto.String,
+			Observation:   ve.Obs.String,
+			Approval:      ve.Aprovado,
+		})
+	}
+
+	return variablesExpenseEntity, nil
+}
+
 func (d *Database) GetCostCenterById(ctx context.Context, id int) (*entity.CostCenter, error) {
 	executive, err := d.queries.SelectExecutiveById(ctx, int32(id))
 	if err != nil {

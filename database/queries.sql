@@ -106,6 +106,11 @@ SELECT * FROM gastos_variaveis
 WHERE fk_centro_de_custos = $1;
 
 
+-- name: SelectVariableExpenseByEmployee :many
+SELECT * FROM gastos_variaveis
+WHERE responsavel = $1;
+
+
 -- name: SelectExecutiveById :one
 SELECT * FROM "executivo"
 WHERE "Id_executivo" = $1;
