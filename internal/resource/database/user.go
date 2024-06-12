@@ -23,23 +23,29 @@ func (d *Database) GetUser(ctx context.Context, user entity.User) (*entity.IdsUs
 		return nil, errors.New("USER NOT FOUND")
 	}
 
-	idUser := userRows.IDUsuario
-	idsRows, err := d.queries.GetIds(ctx, idUser)
-	if err != nil {
-		d.log.Error(err.Error())
-		return nil, validateUserErrSql(err)
+	if userRows.TipoUsuario == "EXEC" {
+		idUser := userRows.IDUsuario
+		idsRows, err := d.queries.GetIdsExecutive(ctx, idUser)
+		if err != nil {
+			d.log.Error(err.Error())
+			return nil, validateUserErrSql(err)
+		}
+	
+		typeUser := userRows.TipoUsuario
+	
+		ids := &entity.IdsUser{
+			NameUser:     userRows.Nome,
+			IdExecutive:  int(idsRows.IdExecutivo),
+			IdCostCenter: int(idsRows.FkCentroDeCustos),
+			TypeUser:     entity.TypeUser(typeUser),
+		}
+		return ids, nil
 	}
 
-	typeUser := userRows.TipoUsuario
+	return &entity.IdsUser{
+		NameUser: userRows.Nome,
+	}, nil
 
-	ids := &entity.IdsUser{
-		NameUser:     userRows.Nome,
-		IdExecutive:  int(idsRows.IdExecutivo),
-		IdCostCenter: int(idsRows.FkCentroDeCustos),
-		TypeUser:     entity.TypeUser(typeUser),
-	}
-
-	return ids, nil
 }
 
 func (d *Database) InsertUser(ctx context.Context, user entity.User) error {
