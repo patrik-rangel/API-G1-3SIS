@@ -25,6 +25,7 @@ func (h *Handler) AddVariableExpense(ctx context.Context, req openapi.OptVariabl
 
 	err := h.costService.AddVariableExpense(ctx, variableExpense)
 	if err != nil {
+		h.log.Error(fmt.Sprintf("AddVariableExpense error: %s", err))
 		return nil, err
 	}
 
@@ -42,6 +43,7 @@ func (h *Handler) ApprovalVariableExepense(ctx context.Context, req openapi.OptV
 
 	err := h.costService.ApprovalVariableExepense(ctx, variableExpense)
 	if err != nil {
+		h.log.Error(fmt.Sprintf("ApprovalVariableExepense error: %s", err))
 		return nil, err
 	}
 
@@ -59,6 +61,7 @@ func (h *Handler) CreateCostCenter(ctx context.Context, req openapi.OptCostCente
 
 	id, err := h.costService.CreateCostCenter(ctx, costCenter)
 	if err != nil {
+		h.log.Error(fmt.Sprintf("CreateCostCenter error: %s", err))
 		return nil, err
 	}
 
@@ -69,6 +72,7 @@ func (h *Handler) CreateCostCenter(ctx context.Context, req openapi.OptCostCente
 func (h *Handler) GetVariableExpensesByCostCenter(ctx context.Context, params openapi.GetVariableExpensesByCostCenterParams) (openapi.GetVariableExpensesByCostCenterRes, error) {
 	variablesExpenses, err := h.costService.GetVariableExpensesByCostCenter(ctx, params.IDCostCenter)
 	if err != nil {
+		h.log.Error(fmt.Sprintf("GetVariableExpensesByCostCenter error: %s", err))
 		return nil, err
 	}
 
@@ -96,6 +100,7 @@ func (h *Handler) GetVariableExpensesByEmployee(ctx context.Context, params open
 	variablesExpenses, err := h.costService.GetVariableExpensesByEmployee(ctx, params.NameEmployee)
 
 	if err != nil {
+		h.log.Error(fmt.Sprintf("GetVariableExpensesByEmployee error: %s", err))
 		return nil, err
 	}
 
@@ -122,6 +127,7 @@ func (h *Handler) GetVariableExpensesByEmployee(ctx context.Context, params open
 func (h *Handler) GetCostCenterById(ctx context.Context, params openapi.GetCostCenterByIdParams) (openapi.GetCostCenterByIdRes, error) {
 	costCenter, err := h.costService.GetCostCenterById(ctx, params.IDExecutive)
 	if err != nil {
+		h.log.Error(fmt.Sprintf("GetCostCenterById error: %s", err))
 		return nil, err
 	}
 
@@ -137,6 +143,7 @@ func (h *Handler) GetCostCenterById(ctx context.Context, params openapi.GetCostC
 func (h *Handler) GetEmployeesByCostCenter(ctx context.Context, params openapi.GetEmployeesByCostCenterParams) (openapi.GetEmployeesByCostCenterRes, error) {
 	employees, err := h.costService.GetEmployeesByCostCenter(ctx, params.IDCostCenter)
 	if err != nil {
+		h.log.Error(fmt.Sprintf("GetEmployeesByCostCenter error: %s", err))
 		return nil, err
 	}
 

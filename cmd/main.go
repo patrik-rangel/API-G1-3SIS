@@ -44,7 +44,21 @@ func main() {
 }
 
 func connDb() *sqlx.DB {
-	db, err := sqlx.Connect("pgx", "user=grupo1 password=grupo1 host=localhost port=5432 database=grupo1 sslmode=disable")
+	user := os.Getenv("DATABASE_USER")
+	password := os.Getenv("DATABASE_PASSWORD")
+	host := os.Getenv("DATABASE_HOST")
+	port := os.Getenv("DATABASE_PORT")
+	database := os.Getenv("DATABASE_NAME")
+
+	connStr := "user=" + user +
+		" password=" + password +
+		" host=" + host +
+		" port=" + port +
+		" database=" + database +
+		" sslmode=disable" 
+
+
+	db, err := sqlx.Connect("pgx", connStr)
 	if err != nil {
 		log.Fatal(err)
 		panic("error in connection database")
