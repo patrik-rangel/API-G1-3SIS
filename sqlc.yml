@@ -1,0 +1,9 @@
+version: "2"
+sql:
+  - engine: postgresql
+    queries: database/queries.sql
+    schema: tools/postgres/scripts/1-tables.sql
+    gen:
+      go:
+        package: sql
+        out: ./generated/sqlc

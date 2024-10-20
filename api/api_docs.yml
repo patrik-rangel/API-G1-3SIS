@@ -1,7 +1,7 @@
 openapi: 3.0.2
 
 security:
-  - bearerAuth: []
+  - authorization: []
 
 info:
   version: 1.0.0
@@ -29,6 +29,12 @@ paths:
             schema:
               $ref: '#/components/schemas/User'
       responses:
+        default: &default
+          description: default error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '201':
           description: Created
         '400':
@@ -69,6 +75,8 @@ paths:
                   type: string
                   description: User's password
       responses:
+        default:
+          <<: *default
         '200':
           description: Login successful
           content:
@@ -76,13 +84,26 @@ paths:
               schema:
                 type: object
                 properties:
-                  token:
+                  id_executive:
+                    type: integer
+                    description: ID Executive
+                  id_cost_center:
+                    type: integer
+                    description: ID Cost Center
+                  type_user:
                     type: string
-                    description: Access token for authorization
-                  user:
-                    $ref: '#/components/schemas/User'
+                    description: Type User
+                  name:
+                    type: string
+                    description: Name User
         '400':
           description: Bad Request (e.g., invalid credentials)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
@@ -97,15 +118,25 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CostCenter'
       responses:
+        default:
+          <<: *default
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id_cost_center:
+                    type: string
+                    description: Id Cost Center
         '400':
           description: Bad Request
           content:
@@ -131,22 +162,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  '/api/v1/cost-center/{id-cost-center}':
+  '/api/v1/cost-center/{id-executive}':
     get:
       summary: Get Cost Center by ID
       operationId: GetCostCenterById
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       parameters:
         - in: path
-          name: id-cost-center
+          name: id-executive
           required: true
           schema:
             type: integer
             description: Unique cost center identifier
       responses:
+        default:
+          <<: *default
         '200':
           description: Cost Center retrieved successfully
           content:
@@ -185,7 +218,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       parameters:
         - in: path
           name: id_cost_center
@@ -205,12 +238,9 @@ paths:
                 email:
                   type: string
                   description: Executive email address
-                password:  
-                  type: string
-                  description: Executive password
-                type_user:
-                  $ref: '#/components/schemas/TypeUser'
       responses:
+        default:
+          <<: *default
         '201':
           description: Executive registered successfully
           content:
@@ -218,11 +248,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  id_executive:
                     type: string
-                    description: Success message (e.g., "Executive registered successfully")
-                  user:
-                    $ref: '#/components/schemas/User'
+                    description: ID Executive
         '400':
           description: Bad Request
           content:
@@ -267,7 +295,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       requestBody:
         content:
           application/json:
@@ -280,12 +308,9 @@ paths:
                 email:
                   type: string
                   description: Employee email address
-                password:  
-                  type: string
-                  description: Employee password
-                type_user:
-                  $ref: '#/components/schemas/TypeUser'
       responses:
+        default:
+          <<: *default
         '201':
           description: Created
           content:
@@ -334,13 +359,15 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []  
+        - authorization: [] 
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Employee'
       responses:
+        default:
+          <<: *default
         '201':
           description: Employee created successfully
         '400':
@@ -381,7 +408,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: []  
+        - authorization: []  
       parameters:
         - in: path
           name: id-cost-center
@@ -390,6 +417,8 @@ paths:
             type: integer
             description: Unique cost center identifier
       responses:
+        default:
+          <<: *default
         '200':
           description: List of employees for the cost center
           content:
@@ -427,27 +456,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  /api/v1/variable-cost/{id-variable-expense}:
+  /api/v1/variable-cost:
     patch:
       summary: Approval Variable Exepense
       operationId: ApprovalVariableExepense
       tags:
         - executive
       security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: id-variable-expense
-          required: true
-          schema:
-            type: integer
-            description: Unique variable expense identifier
+        - authorization: []
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/VariableExpenseUpdate'
       responses:
+        default:
+          <<: *default
         '200':
           description: Expense updated successfully
         '400':
@@ -475,20 +499,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  /api/v1/variable-cost:
+  '/api/v1/create-variable-cost/{id-cost-center}':
     post:
       summary: Add Variable Expense
       operationId: AddVariableExpense
       tags:
         - cost
       security:
-        - bearerAuth: []
+        - authorization: []
+      parameters:
+        - in: path
+          name: id-cost-center
+          required: true
+          schema:
+            type: integer
+            description: Unique cost center identifier
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/VariableExpense'
       responses:
+        default:
+          <<: *default
         '201':
           description: Expense added successfully
         '400':
@@ -523,7 +556,7 @@ paths:
       tags:
         - executive
       security:
-        - bearerAuth: [] 
+        - authorization: [] 
       parameters:
         - in: path
           name: id-cost-center
@@ -532,6 +565,8 @@ paths:
             type: integer
             description: Unique cost center identifier
       responses:
+        default:
+          <<: *default
         '200':
           description: List of variable expenses for the cost center
           content:
@@ -563,12 +598,67 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  '/api/v1/variable-cost/by-employee/{name-employee}':
+    get:
+      summary: Get Variable Expenses by Employee
+      operationId: GetVariableExpensesByEmployee
+      tags:
+        - executive
+      security:
+        - authorization: [] 
+      parameters:
+        - in: path
+          name: name-employee
+          required: true
+          schema:
+            type: string
+            description: Employee Name
+      responses:
+        default:
+          <<: *default
+        '200':
+          description: List of variable expenses for the cost center
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVariableExpense'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    authorization:
+      type: apiKey
+      in: header
+      name: Authorization
   
   schemas:
     User:
@@ -593,16 +683,20 @@ components:
       description: Cost center type (Productive or Non-Productive)
       type: object
       required:
+        - area
         - cost_center_name
-        - quarterly_budget
+        - annual_budget
         - type_cost_center
       properties:
+        area:
+          type: string
+          description: area related to the cost center
         cost_center_name:
           type: string
           description: Cost center name
-        quarterly_budget:
+        annual_budget:
           type: number
-          description: Quarterly budget
+          description: Annual budget
         type_cost_center:
           type: string
           enum:
@@ -687,9 +781,6 @@ components:
         approval:
           type: boolean
           description: Expense approval status (true or false)
-        fk_cost_center:
-          type: integer
-          description: Foreign key referencing the cost center
           
     ListVariableExpense:
       description: List of variable expenses for the cost center
@@ -731,7 +822,5 @@ components:
       description: Error object
       type: object
       properties:
-        error:
-          type: string
         message:
           type: string

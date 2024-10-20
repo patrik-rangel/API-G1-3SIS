@@ -19,3 +19,12 @@
 
 # Go workspace file
 go.work
+
+# openapi
+generated/openapi
+
+# env
+.env
+
+# sqlc
+generated/sqlc
