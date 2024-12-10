@@ -29,6 +29,16 @@ type VariableExepense struct {
 	CostCenter    int
 }
 
+type VariableExepenseByArea struct {
+	Type           string
+	Value          float64
+	Category       string
+	PaymentMethod  string
+	CostCenterName string
+	AreaName       string
+	ValueTotal     float64
+}
+
 func (t TypeCostCenter) String() string {
 	return string(t)
 }

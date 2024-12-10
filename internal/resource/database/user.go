@@ -36,6 +36,7 @@ func (d *Database) GetUser(ctx context.Context, user entity.User) (*entity.IdsUs
 			IdExecutive:  int(idsRows.IdExecutivo),
 			IdCostCenter: int(idsRows.FkCentroDeCustos),
 			TypeUser:     entity.TypeUser(userRows.TipoUsuario),
+			IdArea:       int(idsRows.AreaID),
 		}
 		return idsExecutive, nil
 	} else {

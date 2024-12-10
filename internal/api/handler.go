@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	logger "github.com/patrik-rangel/API-G1-3SIS/config/log"
 	"github.com/patrik-rangel/API-G1-3SIS/generated/openapi"
@@ -56,6 +57,8 @@ func (h *Handler) NewError(ctx context.Context, err error) *openapi.ErrorRespons
 		statusCode = 404
 		msg = entity.ErrNotFoundCostCenter.Error()
 	}
+
+	h.log.Error(fmt.Sprintf("Error: %s", err))
 
 	return &openapi.ErrorResponseStatusCode{
 		StatusCode: statusCode,

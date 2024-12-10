@@ -24,6 +24,7 @@ func (h *Handler) LoginUser(ctx context.Context, req openapi.OptLoginUserReq) (o
 		IDExecutive:  openapi.NewOptInt(ids.IdExecutive),
 		IDCostCenter: openapi.NewOptInt(ids.IdCostCenter),
 		TypeUser:     openapi.NewOptString(ids.TypeUser.String()),
+		IDArea:       openapi.NewOptInt(ids.IdArea),
 	}, nil
 }
 

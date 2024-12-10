@@ -19,6 +19,7 @@ type Cost interface {
 	GetVariableExpensesByEmployee(ctx context.Context, name string) ([]*entity.VariableExepense, error)
 	GetCostCenterById(ctx context.Context, id int) (*entity.CostCenter, error)
 	GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.Employee, error)
+	GetVariableExpenseByArea(ctx context.Context, idArea int) ([]*entity.VariableExepenseByArea, error)
 }
 
 type CostService struct {
@@ -59,4 +60,8 @@ func (c *CostService) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*
 
 func (c *CostService) GetVariableExpensesByEmployee(ctx context.Context, name string) ([]*entity.VariableExepense, error) {
 	return c.gtw.GetVariableExpensesByEmployee(ctx, name)
+}
+
+func (c *CostService) GetVariableExpenseByArea(ctx context.Context, idArea int) ([]*entity.VariableExepenseByArea, error) {
+	return c.gtw.GetVariableExpenseByArea(ctx, idArea)
 }
