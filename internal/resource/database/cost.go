@@ -32,6 +32,29 @@ func (d *Database) InsertVariableExpense(ctx context.Context, variableExepense e
 }
 
 func (d *Database) UpdateVariableExepense(ctx context.Context, variableExepense entity.VariableExepense) error {
+	if variableExepense.Approval == false {
+		variableExpenseCurrent, err := d.queries.GetVariableExpense(ctx, sqlc.GetVariableExpenseParams{
+			TipoVariavel: variableExepense.Type,
+			Valor:        variableExepense.Value,
+			Data:         variableExepense.Date,
+			Responsavel:  variableExepense.Responsibile,
+			MetodoPagto:  sql.NullString{variableExepense.PaymentMethod, true},
+			Obs:          sql.NullString{variableExepense.Observation, true},
+		})
+		if err != nil {
+			d.log.Error("Erro ao buscar o gasto variavel")
+			d.log.Error(err.Error())
+			return validateCostErrSql(err)
+		}
+
+		err = d.queries.InsertVariableExpenseDenied(ctx, variableExpenseCurrent.IDGastosVariaveis)
+		if err != nil {
+			d.log.Error("Erro ao inserir o gasto variavel na tabela de gasto variavel negado")
+			d.log.Error(err.Error())
+			return validateCostErrSql(err)
+		}
+	}
+
 	err := d.queries.UpdateVariableExpense(ctx, sqlc.UpdateVariableExpenseParams{
 		Aprovado:     variableExepense.Approval,
 		Data:         variableExepense.Date,
@@ -179,6 +202,33 @@ func (d *Database) GetEmployeesByCostCenter(ctx context.Context, id int) ([]*ent
 	return employeesEntity, nil
 }
 
+func (d *Database) GetVariableExpenseByArea(ctx context.Context, idArea int) ([]*entity.VariableExepenseByArea, error) {
+	variablesExpense, err := d.queries.GetVariableExpenseByArea(ctx, int32(idArea))
+	if err != nil {
+		d.log.Error(err.Error())
+		if strings.Contains(err.Error(), "sql: no rows in result set") {
+			return []*entity.VariableExepenseByArea{}, nil
+		}
+		return nil, validateCostErrSql(err)
+	}
+
+	variablesExpenseEntity := make([]*entity.VariableExepenseByArea, 0, len(variablesExpense))
+
+	for _, ve := range variablesExpense {
+		variablesExpenseEntity = append(variablesExpenseEntity, &entity.VariableExepenseByArea{
+			Type:           ve.TipoVariavel,
+			Value:          ve.Valor,
+			Category:       ve.CategoriaDespesa,
+			PaymentMethod:  ve.MetodoPagto.String,
+			CostCenterName: ve.NomeCentroDeCustos,
+			AreaName:       ve.NomeArea,
+			ValueTotal:     float64(ve.TotalValorGastosNegados),
+		})
+	}
+
+	return variablesExpenseEntity, nil
+}
+
 func getYearStartAndEnd() (time.Time, time.Time) {
 	// Get the current year
 	currentYear := time.Now().Year()
@@ -206,9 +256,9 @@ func validateCostErrSql(err error) error {
 	return err
 }
 
-/* func nullStringToString (v sql.NullString) string {
+func nullStringToString(v sql.NullString) string {
 	if !v.Valid || v.String == "" {
 		return ""
 	}
 	return v.String
-} */
+}

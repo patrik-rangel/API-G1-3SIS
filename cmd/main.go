@@ -55,9 +55,9 @@ func connDb() *sqlx.DB {
 		" host=" + host +
 		" port=" + port +
 		" database=" + database +
-		" sslmode=disable" 
+		" sslmode=require"
 
-
+	log.Println("connection string: ", connStr)
 	db, err := sqlx.Connect("pgx", connStr)
 	if err != nil {
 		log.Fatal(err)

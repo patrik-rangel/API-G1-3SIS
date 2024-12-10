@@ -13,4 +13,5 @@ type Cost interface {
 	GetVariableExpensesByEmployee(ctx context.Context, name string) ([]*entity.VariableExepense, error)
 	GetCostCenterById(ctx context.Context, id int) (*entity.CostCenter, error)
 	GetEmployeesByCostCenter(ctx context.Context, id int) ([]*entity.Employee, error)
+	GetVariableExpenseByArea(ctx context.Context, idArea int) ([]*entity.VariableExepenseByArea, error)
 }

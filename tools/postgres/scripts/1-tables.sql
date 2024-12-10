@@ -79,3 +79,12 @@ CREATE TABLE IF NOT EXISTS "gastos_variaveis" (
   "fk_centro_de_custos" INTEGER NOT NULL,
   UNIQUE(tipo_variavel, data, responsavel)
 );
+
+-- -----------------------------------------------------
+-- Table `gastos_variaveis_negados`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "gastos_variaveis_negados" (
+  "id" SERIAL PRIMARY KEY,
+  "fk_gastos_variaveis" INTEGER NOT NULL REFERENCES "gastos_variaveis"("id_gastos_variaveis") ON DELETE CASCADE,
+  "data_negacao" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

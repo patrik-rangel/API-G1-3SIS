@@ -13,10 +13,16 @@ AND
     senha = $2;
 
 -- name: GetIdsExecutive :one
-SELECT * FROM executivo 
-WHERE 
-    fk_usuario = $1;
-
+SELECT
+    e.*,
+    cc.fk_area AS area_id,
+    a.nome_area
+FROM
+    executivo e
+INNER JOIN centro_de_custos cc ON e.fk_centro_de_custos = cc.id_centro_de_custos
+INNER JOIN area a ON cc.fk_area = a.id_area
+WHERE
+    e.fk_usuario = $1;
 
 -- name: GetIdsEmployee :one
 SELECT * FROM funcionario 
@@ -132,3 +138,49 @@ WHERE centro_de_custos.id_centro_de_custos = $1;
 -- name: SelectEmployeesByCostCenterId :many
 SELECT * FROM funcionario
 WHERE fk_centro_de_custos = $1;
+
+
+-- name: InsertVariableExpenseDenied :exec
+INSERT INTO gastos_variaveis_negados 
+(fk_gastos_variaveis)
+VALUES ($1);
+
+
+-- name: GetVariableExpense :one
+SELECT *
+FROM gastos_variaveis
+WHERE
+    tipo_variavel = $1
+    AND valor = $2
+    AND data = $3
+    AND responsavel = $4
+    AND metodo_pagto = $5
+    AND obs = $6;
+
+
+-- name: GetVariableExpenseByArea :many
+SELECT 
+    gvn.id AS id_gasto_negado,
+    gv.tipo_variavel,
+    gv.valor,
+    gv.categoria_despesa,
+    gv.metodo_pagto,
+    cc.nome_centro AS nome_centro_de_custos,
+    a.nome_area AS nome_area,
+    (SELECT SUM(gv_sub.valor)
+     FROM gastos_variaveis_negados gvn_sub
+     INNER JOIN gastos_variaveis gv_sub ON gvn_sub.fk_gastos_variaveis = gv_sub.id_gastos_variaveis
+     INNER JOIN centro_de_custos cc_sub ON gv_sub.fk_centro_de_custos = cc_sub.id_centro_de_custos
+     INNER JOIN area a_sub ON cc_sub.fk_area = a_sub.id_area
+     WHERE a_sub.id_area = a.id_area
+    ) AS total_valor_gastos_negados
+FROM 
+    gastos_variaveis_negados gvn
+INNER JOIN 
+    gastos_variaveis gv ON gvn.fk_gastos_variaveis = gv.id_gastos_variaveis
+INNER JOIN 
+    centro_de_custos cc ON gv.fk_centro_de_custos = cc.id_centro_de_custos
+INNER JOIN 
+    area a ON cc.fk_area = a.id_area
+WHERE 
+    a.id_area = $1;

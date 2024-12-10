@@ -96,6 +96,9 @@ paths:
                   name:
                     type: string
                     description: Name User
+                  id_area: 
+                    type: integer
+                    description: ID Area
         '400':
           description: Bad Request (e.g., invalid credentials)
           content:
@@ -186,6 +189,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CostCenter'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  '/api/v1/variable-expense/{id-area}':
+    get:
+      summary: Get Variable Expense By Area
+      operationId: GetVariableExpenseByArea
+      tags:
+        - executive
+      security:
+        - authorization: [] 
+      parameters:
+        - in: path
+          name: id-area
+          required: true
+          schema:
+            type: integer
+            description: Unique area identifier
+      responses:
+        default:
+          <<: *default
+        '200':
+          description: Cost Center retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVariableExpenseByArea'
         '401':
           description: Unauthorized
           content:
@@ -787,6 +839,41 @@ components:
       type: array
       items:
        $ref: '#/components/schemas/VariableExpense' 
+
+    VariableExpenseByArea:
+      description: Updated variable expense data
+      type: object
+      properties:
+        id_gasto_negado:
+          type: integer
+          description: ID Denied Cost
+        type_variable:
+          type: string
+          description: type variable expense
+        value:
+          type: number
+          description: Expense amount
+        category:
+          type: string
+          description: Expense category
+        payment_method:
+          type: string
+          description: Payment method (e.g., cash, card)
+        cost_center_name:
+          type: string
+          description: Cost center name
+        area_name:
+          type: string
+          description: Area name
+        value_total:
+          type: number
+          description: Expense amount total
+
+    ListVariableExpenseByArea:
+      description: List of variable expenses for the Area
+      type: array
+      items:
+       $ref: '#/components/schemas/VariableExpenseByArea' 
        
     VariableExpenseUpdate:
       description: Updated variable expense data

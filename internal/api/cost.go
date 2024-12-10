@@ -162,6 +162,30 @@ func (h *Handler) GetEmployeesByCostCenter(ctx context.Context, params openapi.G
 	return &res, nil
 }
 
+func (h *Handler) GetVariableExpenseByArea(ctx context.Context, req openapi.GetVariableExpenseByAreaParams) (openapi.GetVariableExpenseByAreaRes, error) {
+	variablesExpenses, err := h.costService.GetVariableExpenseByArea(ctx, req.IDArea)
+	if err != nil {
+		h.log.Error(fmt.Sprintf("GetVariableExpensesByCostCenter error: %s", err))
+		return nil, err
+	}
+
+	var res openapi.ListVariableExpenseByArea = make([]openapi.VariableExpenseByArea, 0, len(variablesExpenses))
+
+	for _, ve := range variablesExpenses {
+		res = append(res, openapi.VariableExpenseByArea{
+			TypeVariable:   openapi.NewOptString(ve.Type),
+			Value:          openapi.NewOptFloat64(ve.Value),
+			Category:       openapi.NewOptString(ve.Category),
+			PaymentMethod:  openapi.NewOptString(ve.PaymentMethod),
+			CostCenterName: openapi.NewOptString(ve.CostCenterName),
+			AreaName:       openapi.NewOptString(ve.AreaName),
+			ValueTotal:     openapi.NewOptFloat64(ve.ValueTotal),
+		})
+	}
+
+	return &res, nil
+}
+
 func SetBool(v openapi.OptBool) bool {
 	if !v.Value {
 		return false

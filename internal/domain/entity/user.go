@@ -19,6 +19,7 @@ type IdsUser struct {
 	IdExecutive  int
 	IdCostCenter int
 	TypeUser     TypeUser
+	IdArea       int
 }
 
 func (t TypeUser) String() string {
