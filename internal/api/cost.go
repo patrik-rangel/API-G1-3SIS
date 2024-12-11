@@ -19,7 +19,7 @@ func (h *Handler) AddVariableExpense(ctx context.Context, req openapi.OptVariabl
 		Category:      req.Value.Category,
 		PaymentMethod: req.Value.PaymentMethod,
 		Observation:   req.Value.Obs,
-		Approval:      SetBool(req.Value.Approval),
+		Approval:      optNilBoolToBoolPtr(req.Value.Approval),
 		CostCenter:    params.IDCostCenter,
 	}
 
@@ -38,7 +38,7 @@ func (h *Handler) ApprovalVariableExepense(ctx context.Context, req openapi.OptV
 		Date:         req.Value.Date,
 		Responsibile: req.Value.Responsible,
 		Type:         req.Value.VariableType,
-		Approval:     req.Value.Approved,
+		Approval:     boolToBoolPtr(req.Value.Approved),
 	}
 
 	err := h.costService.ApprovalVariableExepense(ctx, variableExpense)
@@ -88,7 +88,7 @@ func (h *Handler) GetVariableExpensesByCostCenter(ctx context.Context, params op
 			Category:      ve.Category,
 			PaymentMethod: ve.PaymentMethod,
 			Obs:           ve.Observation,
-			Approval:      openapi.NewOptBool(ve.Approval),
+			Approval:      ApprovalBool(ve.Approval),
 		})
 	}
 
@@ -116,7 +116,7 @@ func (h *Handler) GetVariableExpensesByEmployee(ctx context.Context, params open
 			Category:      ve.Category,
 			PaymentMethod: ve.PaymentMethod,
 			Obs:           ve.Observation,
-			Approval:      openapi.NewOptBool(ve.Approval),
+			Approval:      ApprovalBool(ve.Approval),
 		})
 	}
 
@@ -186,10 +186,23 @@ func (h *Handler) GetVariableExpenseByArea(ctx context.Context, req openapi.GetV
 	return &res, nil
 }
 
-func SetBool(v openapi.OptBool) bool {
-	if !v.Value {
-		return false
+func ApprovalBool(approval *bool) openapi.OptNilBool {
+	if approval != nil {
+		return openapi.OptNilBool{*approval, true, false}
 	} else {
-		return true
+		return openapi.OptNilBool{false, false, true}
 	}
+}
+
+func boolToBoolPtr(b bool) *bool {
+	ptr := new(bool)
+	*ptr = b
+	return ptr
+}
+
+func optNilBoolToBoolPtr(opt openapi.OptNilBool) *bool {
+	if opt.Set {
+		return &opt.Value
+	}
+	return nil
 }

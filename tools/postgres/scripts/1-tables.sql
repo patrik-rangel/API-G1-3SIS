@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS "gastos_variaveis" (
   "obs" VARCHAR(200),
   "data" TIMESTAMP NOT NULL,
   "responsavel" VARCHAR(65) NOT NULL,
-  "aprovado" BOOLEAN NOT NULL DEFAULT FALSE,
+  "aprovado" BOOLEAN,
   "fk_centro_de_custos" INTEGER NOT NULL,
   UNIQUE(tipo_variavel, data, responsavel)
 );
