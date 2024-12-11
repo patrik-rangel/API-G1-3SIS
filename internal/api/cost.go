@@ -201,7 +201,7 @@ func boolToBoolPtr(b bool) *bool {
 }
 
 func optNilBoolToBoolPtr(opt openapi.OptNilBool) *bool {
-	if opt.Set {
+	if !opt.Null {
 		return &opt.Value
 	}
 	return nil
