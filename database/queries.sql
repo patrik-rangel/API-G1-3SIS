@@ -151,11 +151,8 @@ SELECT *
 FROM gastos_variaveis
 WHERE
     tipo_variavel = $1
-    AND valor = $2
-    AND data = $3
-    AND responsavel = $4
-    AND metodo_pagto = $5
-    AND obs = $6;
+    AND data = $2
+    AND responsavel = $3;
 
 
 -- name: GetVariableExpenseByArea :many

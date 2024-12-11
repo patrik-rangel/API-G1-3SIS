@@ -35,11 +35,8 @@ func (d *Database) UpdateVariableExepense(ctx context.Context, variableExepense 
 	if isFalsePtrBool(variableExepense.Approval) {
 		variableExpenseCurrent, err := d.queries.GetVariableExpense(ctx, sqlc.GetVariableExpenseParams{
 			TipoVariavel: variableExepense.Type,
-			Valor:        variableExepense.Value,
 			Data:         variableExepense.Date,
 			Responsavel:  variableExepense.Responsibile,
-			MetodoPagto:  sql.NullString{variableExepense.PaymentMethod, true},
-			Obs:          sql.NullString{variableExepense.Observation, true},
 		})
 		if err != nil {
 			d.log.Error("Erro ao buscar o gasto variavel")
