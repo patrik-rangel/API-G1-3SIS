@@ -25,7 +25,7 @@ type VariableExepense struct {
 	Category      string
 	PaymentMethod string
 	Observation   string
-	Approval      bool
+	Approval      *bool
 	CostCenter    int
 }
 

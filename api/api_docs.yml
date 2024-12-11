@@ -833,6 +833,7 @@ components:
         approval:
           type: boolean
           description: Expense approval status (true or false)
+          nullable: true
           
     ListVariableExpense:
       description: List of variable expenses for the cost center

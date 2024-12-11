@@ -20,7 +20,7 @@ func (d *Database) InsertVariableExpense(ctx context.Context, variableExepense e
 		Obs:              sql.NullString{String: variableExepense.Observation, Valid: true},
 		Data:             variableExepense.Date,
 		Responsavel:      variableExepense.Responsibile,
-		Aprovado:         variableExepense.Approval,
+		Aprovado:         boolPtrToNullBool(variableExepense.Approval),
 		FkCentroDeCustos: int32(variableExepense.CostCenter),
 	})
 	if err != nil {
@@ -32,7 +32,7 @@ func (d *Database) InsertVariableExpense(ctx context.Context, variableExepense e
 }
 
 func (d *Database) UpdateVariableExepense(ctx context.Context, variableExepense entity.VariableExepense) error {
-	if variableExepense.Approval == false {
+	if isFalsePtrBool(variableExepense.Approval) {
 		variableExpenseCurrent, err := d.queries.GetVariableExpense(ctx, sqlc.GetVariableExpenseParams{
 			TipoVariavel: variableExepense.Type,
 			Valor:        variableExepense.Value,
@@ -56,7 +56,7 @@ func (d *Database) UpdateVariableExepense(ctx context.Context, variableExepense 
 	}
 
 	err := d.queries.UpdateVariableExpense(ctx, sqlc.UpdateVariableExpenseParams{
-		Aprovado:     variableExepense.Approval,
+		Aprovado:     boolPtrToNullBool(variableExepense.Approval),
 		Data:         variableExepense.Date,
 		Responsavel:  variableExepense.Responsibile,
 		TipoVariavel: variableExepense.Type,
@@ -121,7 +121,7 @@ func (d *Database) GetVariableExpensesByCostCenter(ctx context.Context, id int) 
 			Category:      ve.CategoriaDespesa,
 			PaymentMethod: ve.MetodoPagto.String,
 			Observation:   ve.Obs.String,
-			Approval:      ve.Aprovado,
+			Approval:      nullBoolToBoolPtr(ve.Aprovado),
 		})
 	}
 
@@ -150,7 +150,7 @@ func (d *Database) GetVariableExpensesByEmployee(ctx context.Context, name strin
 			Category:      ve.CategoriaDespesa,
 			PaymentMethod: ve.MetodoPagto.String,
 			Observation:   ve.Obs.String,
-			Approval:      ve.Aprovado,
+			Approval:      nullBoolToBoolPtr(ve.Aprovado),
 		})
 	}
 
@@ -261,4 +261,23 @@ func nullStringToString(v sql.NullString) string {
 		return ""
 	}
 	return v.String
+}
+
+func nullBoolToBoolPtr(nullBool sql.NullBool) *bool {
+	if nullBool.Valid {
+		b := nullBool.Bool
+		return &b
+	}
+	return nil
+}
+
+func boolPtrToNullBool(b *bool) sql.NullBool {
+	if b == nil {
+		return sql.NullBool{}
+	}
+	return sql.NullBool{Valid: true, Bool: *b}
+}
+
+func isFalsePtrBool(b *bool) bool {
+	return b != nil && *b == false
 }
